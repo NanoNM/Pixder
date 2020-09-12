@@ -233,8 +233,8 @@ if __name__ == '__main__':
         minlike = input('最小点赞数量 默认5000: ') or '5000'
         pagenum = input('最大爬取页面 默认100: ') or '100'
         thread = input('启用线程数 注意 线程数一定要被最大爬取页面整除并且不能等于最大页面数!!!! 1除外 默认20: ') or '20'
-        # classify = input('分级模式选择 1: 大众级 2: 限制级+大众级 3: 限制级 默认1: ') or '1'
         classify = '1'
+        # classify = input('分级模式选择 1: 大众级 2: 限制级+大众级 3: 限制级 默认1: ') or '1'
         start(parse.unquote(name))
         # 模拟登陆 需要人机验证 我不会
         # doLogin(BaseData)
@@ -255,8 +255,8 @@ if __name__ == '__main__':
         minlike = input('最小点赞数量 默认5000: ') or '5000'
         # thread = input('输入启用线程线程 默认1: ') or '1'
         thread = '1'
-        # classify = input('分级模式选择 1: 大众级 2: 限制级+大众级 3: 限制级 默认1: ') or '1'
         classify = '1'
+        # classify = input('分级模式选择 1: 大众级 2: 限制级+大众级 3: 限制级 默认1: ') or '1'
         ints = panterStart(userID)
         if ints == 0:
             pass
