@@ -8,9 +8,9 @@ from requests.packages.urllib3.exceptions import InsecureRequestWarning
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
 '''
-请勿将本程序永远商业用途！
-请勿将本程序永远商业用途！
-请勿将本程序永远商业用途！
+请勿将本程序用于商业用途！
+请勿将本程序用于商业用途！
+请勿将本程序用于商业用途！
 
 出事我不负责 一点责任都没有 网警来找你 那是你的事 这个别找我 我没钱付罚款!!!!
 出事我不负责 一点责任都没有 网警来找你 那是你的事 这个别找我 我没钱付罚款!!!!
