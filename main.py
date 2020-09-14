@@ -327,8 +327,8 @@ if __name__ == '__main__':
             print()
             unfinishedall = 0
             for thr in threads:
+                print(thr.unfinished)
                 unfinishedall = unfinishedall + thr.unfinished
-
             print('任务完成了: ' + str(int(BaseData.pagenum) / (int(BaseData.pagenum) - unfinishedall)) + '%')
 
 

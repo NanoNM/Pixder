@@ -48,7 +48,7 @@ def ImgDownloader(init, date, url, part, index, R='\\\\'):
             pic.write(PIC.content)
         """unzip zip file"""
         if url.find('img-zip-ugoira') != -1:
-            print('动图组 ' + url + ' 解压中')
+            # print('动图组 ' + url + ' 解压中')
             zip_file = zipfile.ZipFile(targeImg)
             targeImgz = targeImg + 'z'
             if os.path.isdir(targeImgz):
@@ -58,8 +58,8 @@ def ImgDownloader(init, date, url, part, index, R='\\\\'):
             for names in zip_file.namelist():
                 zip_file.extract(names, targeImgz)
             zip_file.close()
-            print('动图组 ' + url + ' 解压结束')
-            print('动图组 ' + url + ' 生成GIF中')
+            # print('动图组 ' + url + ' 解压结束')
+            # print('动图组 ' + url + ' 生成GIF中')
             img_paths = []
             for root, dirs, files in os.walk(targeImgz):
                 img_paths = files
@@ -67,12 +67,12 @@ def ImgDownloader(init, date, url, part, index, R='\\\\'):
             for path in img_paths:
                 gif_images.append(imageio.imread(targeImgz + '\\' + path))
             imageio.mimsave(targeImgz + '\\' + "final.gif", gif_images, fps=24)
-            print('动图组 ' + url + ' 生成GIF结束')
-            print('动图组 ' + url + ' 垃圾文件处理中')
+            # print('动图组 ' + url + ' 生成GIF结束')
+            # print('动图组 ' + url + ' 垃圾文件处理中')
             for path in img_paths:
                 os.remove(targeImgz + '\\' + path)
-            print('动图组 ' + url + ' 垃圾文件处理结束')
-        print('下载 ' + url + '结束了! 请自行检查文件是否成功!')
+            # print('动图组 ' + url + ' 垃圾文件处理结束')
+        # print('下载 ' + url + '结束了! 请自行检查文件是否成功!')
         return 0
     except Exception as e:
         print('下载/解压 ' + url + '失败了!', end='')
@@ -84,7 +84,7 @@ def ImgDownloader(init, date, url, part, index, R='\\\\'):
             os.makedirs(parse.unquote(init.name) + R)
         with open(targeImg, mode='wb') as pic:
             pic.write(PIC.content)
-        print('下载 ' + url + '结束了! 请自行检查文件是否成功!')
+        # print('下载 ' + url + '结束了! 请自行检查文件是否成功!')
         return 0
 
 
@@ -162,7 +162,7 @@ class Downloader:
                 part = 'ugoira' + '1920' + 'x' + '1080' + '.zip'
                 url = date['original'].replace('img-original', 'img-zip-ugoira')
                 url = url.replace('ugoira0.jpg', part)
-                print('即将下载动图文件包 1920 x 1080: ' + url)
+                # print('即将下载动图文件包 1920 x 1080: ' + url)
                 picDoDownloader(init, date, url, part, index)
                 index += 1
     @staticmethod
