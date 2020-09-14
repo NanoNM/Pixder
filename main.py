@@ -44,6 +44,8 @@ def start(Name):
     Index = True
     while Index:
         print("PixSpider by Nanometer")
+        print("建议不要自行关闭程序 强行关闭可能会导致图片下载异常")
+        print("网络问题也会导致图片下载异常")
         print("配置文件加载中 . . .")
         if os.path.exists('.\\userInfo.config'):
             global BaseData, NewTask
