@@ -1,6 +1,9 @@
 import shutil, threading
+import sys
+import time
 
 import StaticDateInit
+import pageDownloader
 from pageDownloader import *
 import requests
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
@@ -39,6 +42,7 @@ thread = ''
 classify = ''
 mode = ''
 threads = []
+safeStop = True
 
 
 def start(Name):
@@ -132,7 +136,10 @@ def realStart(Start='null', Stop='null', threadID=None, threadStart=0, threadSto
                         threadInfo['finish'].append(obj['illustId'])
                         FileAnalysis.panterUnfinishedTask(BaseData, Start, threadInfo, mode)
     else:
-        while Start <= int(Stop):
+        while (Start <= int(Stop)) & safeStop:
+            for thr in threads:
+                if threadID == thr.name:
+                    thr.unfinished = int(Stop) - Start
             dates = pageDownloader.jsonLoadAnalysis(BaseData, Start)
             # 细致分析
             fileAnalysis = FileAnalysis()
@@ -151,15 +158,16 @@ def realStart(Start='null', Stop='null', threadID=None, threadStart=0, threadSto
 class work(threading.Thread):
     def __init__(self, threadID, name, page, stopPage):
         threading.Thread.__init__(self)
+        self.safeStop = True
         self.threadID = threadID
         self.name = name
         self.page = page
+        self.unfinished = 0
         self.stopPage = stopPage
 
     def run(self):
-        # 释放锁，开启下一个线程
         print("开始线程：" + self.name)
-        realStart(self.page, self.stopPage, self.name, self.page, self.stopPage)
+        realStart(self.page, self.stopPage, self.name, self.page, self.stopPage, self.safeStop)
         print("退出线程：" + self.name)
 
 
@@ -229,23 +237,23 @@ def panterStart(userID):
 
 if __name__ == '__main__':
     # 执行初始化操作
-    while True:
-        print("PixSpider by Nanometer")
-        print("建议不要自行关闭程序 强行关闭可能会导致图片下载异常")
-        print("网络问题也会导致图片下载异常")
-        print("网络连通性检查中")
-        try:
-            html = requests.session().get("https://www.pixiv.net", headers={
-                'Referer': 'https://www.pixiv.net',
-                'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:15.0) Gecko/20100101 Firefox/15.0.1'},
-                                          verify=False, timeout=3)
-            break
-        except requests.exceptions.ConnectionError as e:
-            print("网络检查失败了, 原因: ", end='')
-            print(e)
-            i = input('输入E停止程序, 输入其他重启测试\n')
-            if i == 'E':
-                exit(1)
+    # while True:
+    #     print("PixSpider by Nanometer")
+    #     print("建议不要自行关闭程序 强行关闭可能会导致图片下载异常")
+    #     print("网络问题也会导致图片下载异常")
+    #     print("网络连通性检查中")
+    #     try:
+    #         html = requests.session().get("https://www.pixiv.net", headers={
+    #             'Referer': 'https://www.pixiv.net',
+    #             'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:15.0) Gecko/20100101 Firefox/15.0.1'},
+    #                                       verify=False, timeout=3)
+    #         break
+    #     except requests.exceptions.ConnectionError as e:
+    #         print("网络检查失败了, 原因: ", end='')
+    #         print(e)
+    #         i = input('输入E停止程序, 输入其他重启测试\n')
+    #         if i == 'E':
+    #             sys.exit(1)
     print("网络连通性检查通过")
     mode = input('模式选择 \n1. 遍历模式(默认)\n2. 画师模式\n3. 画模式\n') or '1'
     if mode == '1':
@@ -270,8 +278,9 @@ if __name__ == '__main__':
                 thr.start()
                 threads.append(thr)
                 index += 1
-        else:
+        elif NewTask:
             realStart(1, BaseData.pagenum)
+
     elif mode == '2':
         print('当前模式 画师模式 如果是想继续上次任务 只需要输入画师ID 其他全部空白')
         userID = input('请输入画师ID') or None
@@ -300,6 +309,7 @@ if __name__ == '__main__':
     elif mode == '3':
         print('当前模式 画模式(未制作) 如果是想继续上次任务 只需要输入画师ID 其他全部空白')
         pass
+
     while True:
         cmd = input()
         if cmd == "status":
@@ -310,7 +320,18 @@ if __name__ == '__main__':
                 else:
                     status = 'Stoped'
                 print('线程' + thr.name + '的状态是: ' + status)
-        if cmd == "stop":
-            print("停止指令已发送")
+        if cmd == "stops":
+            safeStop = False
+            print("请等待所有线程退出后即可安全 退出")
+        if cmd == "msn":
+            print()
+            unfinishedall = 0
+            for thr in threads:
+                unfinishedall = unfinishedall + thr.unfinished
+
+            print('任务完成了: ' + str(int(BaseData.pagenum) / (int(BaseData.pagenum) - unfinishedall)) + '%')
+
+
+
 
 
