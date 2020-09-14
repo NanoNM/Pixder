@@ -32,9 +32,9 @@ class FileAnalysis:
                 jsonDate = json.loads(html)
                 return jsonDate
             except Exception as e:
-                print('重试中')
+                print('获取' + url + '失败了错误原因: ')
+                print(e, end=' 重试中\n')
                 pass
-
 
     @staticmethod
     def UnfinishedTask(init, index, threadInfo, mode):

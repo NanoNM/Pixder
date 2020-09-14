@@ -43,9 +43,6 @@ mode = ''
 def start(Name):
     Index = True
     while Index:
-        print("PixSpider by Nanometer")
-        print("建议不要自行关闭程序 强行关闭可能会导致图片下载异常")
-        print("网络问题也会导致图片下载异常")
         print("配置文件加载中 . . .")
         if os.path.exists('.\\userInfo.config'):
             global BaseData, NewTask
@@ -91,6 +88,7 @@ def start(Name):
             else:
                 BaseData = StaticDateInit.init(config['Cookie'], Name, minlike, pagenum, thread, classify,
                                                config['user-agent'])
+
             print("欢迎使用本程序!")
         else:
             print("您是第一次使用本程序? 请按照要求输入信息.")
@@ -228,6 +226,24 @@ def panterStart(userID):
 
 if __name__ == '__main__':
     # 执行初始化操作
+    while True:
+        print("PixSpider by Nanometer")
+        print("建议不要自行关闭程序 强行关闭可能会导致图片下载异常")
+        print("网络问题也会导致图片下载异常")
+        print("网络连通性检查中")
+        try:
+            html = requests.session().get("https://www.pixiv.net", headers={
+                'Referer': 'https://www.pixiv.net',
+                'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:15.0) Gecko/20100101 Firefox/15.0.1'},
+                                          verify=False, timeout=3)
+            break
+        except requests.exceptions.ConnectionError as e:
+            print("网络检查失败了, 原因: ", end='')
+            print(e)
+            i = input('输入E停止程序, 输入其他重启测试\n')
+            if i == 'E':
+                exit(1)
+    print("网络连通性检查通过")
     mode = input('模式选择 \n1. 遍历模式(默认)\n2. 画师模式\n3. 画模式\n') or '1'
     if mode == '1':
         print('当前模式 遍历模式 如果是想继续上次任务 只需要输入名字 其他全部空白')
