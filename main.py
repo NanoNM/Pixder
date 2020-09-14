@@ -38,6 +38,7 @@ pagenum = ''
 thread = ''
 classify = ''
 mode = ''
+threads = []
 
 
 def start(Name):
@@ -78,8 +79,9 @@ def start(Name):
                                 print('在之前任务中, 此线程的任务已结束')
                             print('线程: ' + path + '启动成功并开始从: ' + str(threadLast['threadStart']) + ' 到 ' + str(
                                 threadLast['threadStop']) + ' 区间继续任务')
-                            work(1, "Thread" + str(thrIndex), threadLast['threadStart'],
-                                 threadLast['threadStop']).start()
+                            thr = work(1, "Thread" + str(thrIndex), threadLast['threadStart'], threadLast['threadStop'])
+                            thr.start()
+                            threads.append(thr)
                             thrIndex += 1
                 else:
                     shutil.rmtree(parse.unquote(name) + '\\lastTask')
@@ -203,8 +205,9 @@ def panterStart(userID):
                                 print('在之前任务中, 此线程的任务已结束')
                             print('线程: ' + path + '启动成功并开始从: ' + str(threadLast['threadStart']) + ' 到 ' + str(
                                 threadLast['threadStop']) + ' 区间继续任务')
-                            work(1, "Thread" + str(thrIndex), threadLast['threadStart'],
-                                 threadLast['threadStop']).start()
+                            thr = work(1, "Thread" + str(thrIndex), threadLast['threadStart'], threadLast['threadStop'])
+                            thr.start()
+                            threads.append(thr)
                             thrIndex += 1
                             return 0
                 else:
@@ -263,7 +266,9 @@ if __name__ == '__main__':
             print("线程准备启动了! 请稍等 ... ")
             while index < int(BaseData.thread):
                 # Thread =
-                work(1, "Thread" + str(index), evPage * index + 1, evPage * (index + 1)).start()
+                thr = work(1, "Thread" + str(index), evPage * index + 1, evPage * (index + 1))
+                thr.start()
+                threads.append(thr)
                 index += 1
         else:
             realStart(1, BaseData.pagenum)
@@ -286,10 +291,26 @@ if __name__ == '__main__':
                 print("线程准备启动了! 请稍等 ... ")
                 while index < int(BaseData.thread):
                     # Thread =
-                    work(1, "Thread" + str(index), evPage * index + 1, evPage * (index + 1)).start()
+                    thr = work(1, "Thread" + str(index), evPage * index + 1, evPage * (index + 1))
+                    thr.start()
+                    threads.append(thr)
                     index += 1
             else:
                 realStart()
     elif mode == '3':
         print('当前模式 画模式(未制作) 如果是想继续上次任务 只需要输入画师ID 其他全部空白')
         pass
+    while True:
+        cmd = input()
+        if cmd == "status":
+            for thr in threads:
+                status = 'Stoped'
+                if thr.is_alive():
+                    status = 'Alive'
+                else:
+                    status = 'Stoped'
+                print('线程' + thr.name + '的状态是: ' + status)
+        if cmd == "stop":
+            print("停止指令已发送")
+
+
