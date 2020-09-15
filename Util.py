@@ -49,18 +49,18 @@ class FileAnalysis:
             "mode": mode,
 
         }
-        if os.path.exists(parse.unquote(init.name) + '\\lastTask'):
+        if os.path.exists(parse.unquote(init.name) + '' + os.sep + 'lastTask'):
             pass
         else:
-            os.makedirs(parse.unquote(init.name) + '\\lastTask')
-        with open('.\\%s\\lastTask\\main.log' % parse.unquote(init.name), 'w', encoding='utf-8') as file:
+            os.makedirs(parse.unquote(init.name) + '' + os.sep + 'lastTask')
+        with open('.' + os.sep + '%s' + os.sep + 'lastTask' + os.sep + 'main.log' % parse.unquote(init.name), 'w', encoding='utf-8') as file:
             file.write(json.dumps(unfinishedTaskInfo, ensure_ascii=False))
 
-        if os.path.exists(parse.unquote(init.name) + '\\lastTask'):
+        if os.path.exists(parse.unquote(init.name) + '' + os.sep + 'lastTask'):
             pass
         else:
-            os.makedirs(parse.unquote(init.name) + '\\lastTask')
-        with open('.\\%s\\lastTask\\%s.log' % (parse.unquote(init.name), threadInfo['threadID']), 'w',
+            os.makedirs(parse.unquote(init.name) + '' + os.sep + 'lastTask')
+        with open('.' + os.sep + '%s' + os.sep + 'lastTask' + os.sep + '%s.log' % (parse.unquote(init.name), threadInfo['threadID']), 'w',
                   encoding='utf-8') as file:
             file.write(json.dumps(threadInfo, ensure_ascii=False))
 
@@ -77,18 +77,18 @@ class FileAnalysis:
             "all": mode,
 
         }
-        if os.path.exists(init.name + '\\lastTask'):
+        if os.path.exists(init.name + '' + os.sep + 'lastTask'):
             pass
         else:
-            os.makedirs(init.name + '\\lastTask')
-        with open('.\\%s\\lastTask\\main.log' % init.name, 'w', encoding='utf-8') as file:
+            os.makedirs(init.name + '' + os.sep + 'lastTask')
+        with open('.' + os.sep + '%s' + os.sep + 'lastTask' + os.sep + 'main.log' % init.name, 'w', encoding='utf-8') as file:
             file.write(json.dumps(unfinishedTaskInfo, ensure_ascii=False))
 
-        if os.path.exists(init.name + '\\lastTask'):
+        if os.path.exists(init.name + '' + os.sep + 'lastTask'):
             pass
         else:
-            os.makedirs(init.name + '\\lastTask')
-        with open('.\\%s\\lastTask\\%s.log' % (init.name, threadInfo['threadID']), 'w',
+            os.makedirs(init.name + '' + os.sep + 'lastTask')
+        with open('.' + os.sep + '%s' + os.sep + 'lastTask' + os.sep + '%s.log' % (init.name, threadInfo['threadID']), 'w',
                   encoding='utf-8') as file:
             file.write(json.dumps(threadInfo, ensure_ascii=False))
 
