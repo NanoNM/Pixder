@@ -339,6 +339,6 @@ if __name__ == '__main__':
             for thr in threads:
                 print(thr.unfinished)
                 unfinishedall = unfinishedall + thr.unfinished
-            print('任务完成了: ' + str(int(BaseData.pagenum) / (int(BaseData.pagenum) - unfinishedall)) + '%')
+            print('任务完成了: ' + str((int(BaseData.pagenum) - unfinishedall / int(BaseData.pagenum)) * 100) + '%')
         else:
             print('没有一个名为' + cmd + '的命令')
