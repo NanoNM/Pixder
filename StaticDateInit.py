@@ -1,5 +1,6 @@
 import requests
 from urllib import parse
+from faker import Faker
 
 
 class StaticDateInit(object):
@@ -46,4 +47,8 @@ class StaticDateInit(object):
 
 
 def init(Cookie, name, minlike, pagenum, thread, classify, userAgent):
-    return StaticDateInit(Cookie, name, minlike, pagenum, thread, classify, userAgent)
+    print('随机获取一个UA池的UA')
+    ua = Faker()
+    fakeUa = ua.user_agent()
+    print('当前UA: ' + fakeUa)
+    return StaticDateInit(Cookie, name, minlike, pagenum, thread, classify, fakeUa)

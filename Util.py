@@ -11,7 +11,7 @@ class FileAnalysis:
             obj['illustTitle'] = jsonDate['body']['illustTitle']
             obj['tags'] = jsonDate['body']['tags']['tags']
             obj['original'] = jsonDate['body']['urls']['original']
-            obj['likeCon'] = jsonDate['body']['likeCount']
+            obj['likeCon'] = jsonDate['body']['bookmarkCount']
             obj['pageCount'] = jsonDate['body']['pageCount']
     # def panterAnalysis(self, date, init):
     #     i = 1
@@ -71,7 +71,7 @@ class FileAnalysis:
             "projectName": "log",
             "MaxPage": init.pagenum,
             "minlike": init.minlike,
-            "thread": init.thread,
+            "thread": 1,
             "classify": init.classify,
             "nowPage": index,
             "all": mode,
@@ -88,7 +88,7 @@ class FileAnalysis:
             pass
         else:
             os.makedirs(init.name + '' + os.sep + 'lastTask')
-        with open('.' + os.sep + init.name + os.sep + 'lastTask' + os.sep + threadInfo['threadID'] + '.log', 'w',
+        with open('.' + os.sep + init.name + os.sep + 'lastTask' + os.sep + 'main.log', 'w',
                   encoding='utf-8') as file:
             file.write(json.dumps(threadInfo, ensure_ascii=False))
 
