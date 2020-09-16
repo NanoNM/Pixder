@@ -53,14 +53,14 @@ class FileAnalysis:
             pass
         else:
             os.makedirs(parse.unquote(init.name) + '' + os.sep + 'lastTask')
-        with open('.' + os.sep + '%s' + os.sep + 'lastTask' + os.sep + 'main.log' % parse.unquote(init.name), 'w', encoding='utf-8') as file:
+        with open('.' + os.sep + parse.unquote(init.name) + os.sep + 'lastTask' + os.sep + 'main.log', 'w', encoding='utf-8') as file:
             file.write(json.dumps(unfinishedTaskInfo, ensure_ascii=False))
 
         if os.path.exists(parse.unquote(init.name) + '' + os.sep + 'lastTask'):
             pass
         else:
             os.makedirs(parse.unquote(init.name) + '' + os.sep + 'lastTask')
-        with open('.' + os.sep + '%s' + os.sep + 'lastTask' + os.sep + '%s.log' % (parse.unquote(init.name), threadInfo['threadID']), 'w',
+        with open('.' + os.sep + parse.unquote(init.name) + os.sep + 'lastTask' + os.sep + threadInfo['threadID'] + '.log', 'w',
                   encoding='utf-8') as file:
             file.write(json.dumps(threadInfo, ensure_ascii=False))
 
@@ -81,14 +81,14 @@ class FileAnalysis:
             pass
         else:
             os.makedirs(init.name + '' + os.sep + 'lastTask')
-        with open('.' + os.sep + '%s' + os.sep + 'lastTask' + os.sep + 'main.log' % init.name, 'w', encoding='utf-8') as file:
+        with open('.' + os.sep + init.name + os.sep + 'lastTask' + os.sep + 'main.log', 'w', encoding='utf-8') as file:
             file.write(json.dumps(unfinishedTaskInfo, ensure_ascii=False))
 
         if os.path.exists(init.name + '' + os.sep + 'lastTask'):
             pass
         else:
             os.makedirs(init.name + '' + os.sep + 'lastTask')
-        with open('.' + os.sep + '%s' + os.sep + 'lastTask' + os.sep + '%s.log' % (init.name, threadInfo['threadID']), 'w',
+        with open('.' + os.sep + init.name + os.sep + 'lastTask' + os.sep + threadInfo['threadID'] + '.log', 'w',
                   encoding='utf-8') as file:
             file.write(json.dumps(threadInfo, ensure_ascii=False))
 

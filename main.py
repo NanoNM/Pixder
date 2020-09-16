@@ -77,7 +77,7 @@ def start(Name):
                         while thrIndex < int(openThread):
                             path = 'thread' + str(thrIndex)
                             print(path + '文件读取尝试!')
-                            with open(parse.unquote(name) + '' + os.sep + 'lastTask' + os.sep + '%s.log' % path, 'r', encoding='utf-8') as file:
+                            with open(parse.unquote(name) + '' + os.sep + 'lastTask' + os.sep + path + '.log', 'r', encoding='utf-8') as file:
                                 last = file.read()
                                 threadLast = json.loads(last)
                             if threadLast['threadStart'] == threadLast['threadStop']:
@@ -207,7 +207,7 @@ def panterStart(userID):
                         while thrIndex < int(openThread):
                             path = 'thread' + str(thrIndex)
                             print(path + '文件读取尝试!')
-                            with open(parse.unquote(name) + '' + os.sep + 'lastTask' + os.sep + '%s.log' % path, 'r', encoding='utf-8') as file:
+                            with open(parse.unquote(name) + '' + os.sep + 'lastTask' + os.sep + path +'.log', 'r', encoding='utf-8') as file:
                                 last = file.read()
                                 threadLast = json.loads(last)
                             if threadLast['threadStart'] == threadLast['threadStop']:
@@ -238,24 +238,24 @@ def panterStart(userID):
 
 if __name__ == '__main__':
     # 执行初始化操作
-    # while True:
-    #     print("PixSpider by Nanometer")
-    #     print("建议不要自行关闭程序 强行关闭可能会导致图片下载异常")
-    #     print("网络问题也会导致图片下载异常")
-    #     print("网络连通性检查中")
-    #     try:
-    #         html = requests.session().get("https://www.pixiv.net", headers={
-    #             'Referer': 'https://www.pixiv.net',
-    #             'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:15.0) Gecko/20100101 Firefox/15.0.1'},
-    #                                       verify=False, timeout=3)
-    #         break
-    #     except requests.exceptions.ConnectionError as e:
-    #         print("网络检查失败了, 原因: ", end='')
-    #         print(e)
-    #         i = input('输入E停止程序, 输入其他重启测试\n')
-    #         if i == 'E':
-    #             sys.exit(1)
-    # print("网络连通性检查通过")
+    while True:
+        print("PixSpider by Nanometer")
+        print("建议不要自行关闭程序 强行关闭可能会导致图片下载异常")
+        print("网络问题也会导致图片下载异常")
+        print("网络连通性检查中")
+        try:
+            html = requests.session().get("https://www.pixiv.net", headers={
+                'Referer': 'https://www.pixiv.net',
+                'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:15.0) Gecko/20100101 Firefox/15.0.1'},
+                                          verify=False, timeout=6)
+            break
+        except Exception as e:
+            print("网络检查失败了, 原因: ", end='')
+            print(e)
+            i = input('输入E停止程序, 输入其他重启测试\n')
+            if i == 'E' or i == 'e':
+                sys.exit(1)
+    print("网络连通性检查通过")
     mode = input('模式选择 \n1. 遍历模式(默认)\n2. 画师模式\n3. 画模式\n') or '1'
     if mode == '1':
         print('当前模式 遍历模式 如果是想继续上次任务 只需要输入名字 其他全部空白')
@@ -321,16 +321,17 @@ if __name__ == '__main__':
                 else:
                     status = 'Stoped'
                 print('线程' + thr.name + '的状态是: ' + status)
-        if cmd == "stops":
+        elif cmd == "stops":
             safeStop = False
             print("请等待所有线程退出后即可安全 退出")
-        if cmd == "msn":
-            print()
+        elif cmd == "msn":
             unfinishedall = 0
             for thr in threads:
                 print(thr.unfinished)
                 unfinishedall = unfinishedall + thr.unfinished
             print('任务完成了: ' + str(int(BaseData.pagenum) / (int(BaseData.pagenum) - unfinishedall)) + '%')
+        else:
+            print('没有一个名为' + cmd + '的命令')
 
 
 

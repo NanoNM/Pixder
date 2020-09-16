@@ -37,10 +37,9 @@ def ImgDownloader(init, date, url, part, index, R='' + os.sep + '' + os.sep + ''
         else:
             os.makedirs(parse.unquote(init.name) + R + '' + os.sep + 'gif')
         if url.find('img-zip-ugoira') != -1:
-            targeImg = '.' + os.sep + '%s%s' + os.sep + 'gif' + os.sep + '%s %s.%s' % (parse.unquote(init.name), R, date['illustId'], date['userId'], sty)
+            targeImg = '.' + os.sep + parse.unquote(init.name) + R + os.sep + 'gif' + os.sep + date['illustId'] + date['userId'] + '.' + sty
         else:
-            targeImg = '.' + os.sep + '%s%s' + os.sep + '%s %s %s.%s' % (
-            parse.unquote(init.name), R, date['illustId'], date['userId'], part, sty)
+            targeImg = '.' + os.sep + parse.unquote(init.name) + R + os.sep + date['illustId'] + date['userId'] + part +'.' + sty
         if os.path.exists(targeImg):
             print('图片 ' + url + ' 存在,跳过了!')
             return 0
