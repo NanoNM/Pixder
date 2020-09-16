@@ -13,6 +13,8 @@
    3. 严格按照print打印的出来的守则使用程序
    
    4. 发现bug和研究出更好的方法和我联系wfprivate@outlook.com
+   
+   5. 务必下载适合你系统的webdriver放入webdriver文件夹 目前仅在centos和windows上测试chrome 暂时未发现问题
     
 >运行时指令 只能遍历模式下使用
 
