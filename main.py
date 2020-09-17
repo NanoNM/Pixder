@@ -175,7 +175,7 @@ class work(threading.Thread):
         self.threadID = threadID
         self.name = name
         self.page = page
-        self.unfinished = 0
+        self.unfinished = None
         self.stopPage = stopPage
 
     def run(self):
@@ -336,9 +336,14 @@ if __name__ == '__main__':
             print("请等待所有线程退出后即可安全 退出")
         elif cmd == "msn":
             unfinishedall = 0
+            index = False
             for thr in threads:
-                print(thr.unfinished)
+                if thr.unfinished is None:
+                    print('还没有计算完成 稍后再试')
+                    break
                 unfinishedall = unfinishedall + thr.unfinished
-            print('任务完成了: ' + str((int(BaseData.pagenum) - unfinishedall / int(BaseData.pagenum)) * 100) + '%')
+                index = True
+            if index:
+                print('任务完成了: ' + str(((int(BaseData.pagenum) - unfinishedall) / int(BaseData.pagenum)) * 100) + '%')
         else:
             print('没有一个名为' + cmd + '的命令')
