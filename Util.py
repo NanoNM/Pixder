@@ -49,18 +49,18 @@ class FileAnalysis:
             "mode": mode,
 
         }
-        if os.path.exists(parse.unquote(init.name) + '' + os.sep + 'lastTask'):
+        if os.path.exists(parse.unquote(init.folderName) + '' + os.sep + 'lastTask'):
             pass
         else:
-            os.makedirs(parse.unquote(init.name) + '' + os.sep + 'lastTask')
-        with open('.' + os.sep + parse.unquote(init.name) + os.sep + 'lastTask' + os.sep + 'main.log', 'w', encoding='utf-8') as file:
+            os.makedirs(parse.unquote(init.folderName) + '' + os.sep + 'lastTask')
+        with open('.' + os.sep + parse.unquote(init.folderName) + os.sep + 'lastTask' + os.sep + 'main.log', 'w', encoding='utf-8') as file:
             file.write(json.dumps(unfinishedTaskInfo, ensure_ascii=False))
 
-        if os.path.exists(parse.unquote(init.name) + '' + os.sep + 'lastTask'):
+        if os.path.exists(parse.unquote(init.folderName) + '' + os.sep + 'lastTask'):
             pass
         else:
-            os.makedirs(parse.unquote(init.name) + '' + os.sep + 'lastTask')
-        with open('.' + os.sep + parse.unquote(init.name) + os.sep + 'lastTask' + os.sep + threadInfo['threadID'] + '.log', 'w',
+            os.makedirs(parse.unquote(init.folderName) + '' + os.sep + 'lastTask')
+        with open('.' + os.sep + parse.unquote(init.folderName) + os.sep + 'lastTask' + os.sep + threadInfo['threadID'] + '.log', 'w',
                   encoding='utf-8') as file:
             file.write(json.dumps(threadInfo, ensure_ascii=False))
 

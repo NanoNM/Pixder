@@ -63,6 +63,7 @@ def userInfoGe():
 
 
 def start(Name):
+    folderName = name.replace(':', '').replace('?', '').replace('\\', '').replace('/', '').replace('*', '').replace('|','').replace('<', '').replace('>', '')
     Index = True
     while Index:
         print("配置文件加载中 . . .")
@@ -73,11 +74,11 @@ def start(Name):
             with open('.' + os.sep + 'userInfo.config', 'r', encoding='utf-8') as file:
                 content = file.read()
                 config = json.loads(content)
-            if os.path.exists(parse.unquote(name) + '' + os.sep + 'lastTask' + os.sep + 'main.log'):
+            if os.path.exists(parse.unquote(folderName) + '' + os.sep + 'lastTask' + os.sep + 'main.log'):
                 x = input('检测到上次的未完成任务 是否继续未完成的任务(Y/N)') or 'y'
                 if x == 'Y' or x == 'y':
                     NewTask = False
-                    with open(parse.unquote(name) + '' + os.sep + 'lastTask' + os.sep + 'main.log', 'r',
+                    with open(parse.unquote(folderName) + '' + os.sep + 'lastTask' + os.sep + 'main.log', 'r',
                               encoding='utf-8') as file:
                         last = file.read()
                         last = json.loads(last)
@@ -95,7 +96,7 @@ def start(Name):
                         while thrIndex < int(openThread):
                             path = 'thread' + str(thrIndex)
                             print(path + '文件读取尝试!')
-                            with open(parse.unquote(name) + '' + os.sep + 'lastTask' + os.sep + path + '.log', 'r',
+                            with open(parse.unquote(folderName) + '' + os.sep + 'lastTask' + os.sep + path + '.log', 'r',
                                       encoding='utf-8') as file:
                                 last = file.read()
                                 threadLast = json.loads(last)
@@ -108,7 +109,7 @@ def start(Name):
                             threads.append(thr)
                             thrIndex += 1
                 else:
-                    shutil.rmtree(parse.unquote(name) + '' + os.sep + 'lastTask')
+                    shutil.rmtree(parse.unquote(folderName) + '' + os.sep + 'lastTask')
                     BaseData = StaticDateInit.init(config['Cookie'], Name, minlike, pagenum, thread, classify,
                                                    config['user-agent'])
             else:

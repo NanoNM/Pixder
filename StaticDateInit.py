@@ -27,6 +27,7 @@ class StaticDateInit(object):
         self.proxies = {}
         self.se = requests.session()
         self.name = parse.quote(name)
+        self.folderName = name.replace(':', '').replace('?', '').replace('\\', '').replace('/', '').replace('*', '').replace('|','').replace('<', '').replace('>', '')
         self.minlike = minlike
         self.pagenum = pagenum
         self.thread = thread
