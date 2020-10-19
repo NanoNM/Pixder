@@ -19,18 +19,23 @@ def seleLogin(init=None):
     # get 方法 打开指定网址
     driver.get(
         'https://accounts.pixiv.net/login?return_to=https%3A%2F%2Fwww.pixiv.net%2F&lang=zh&source=pc&view_type=page')
-    element_pixiv_id = driver.find_elements_by_class_name('input-field')
+    # element_pixiv_id = driver.find_elements_by_class_name('input-field')
     # element_password = driver.find_element_by_name('password')
     # time.sleep(10)
     while True:
-        time.sleep(3)
+        time.sleep(1)
         if driver.current_url == 'https://www.pixiv.net/':
-            driver.get('https://www.pixiv.net/ajax/user/extra?lang=zh')
-            cookiesStr = ''
-            for cookie in driver.get_cookies():
-                cookiesStr = cookiesStr + cookie['name'] + '=' + cookie['value'] + '; '
+            while True:
+                if driver.current_url != 'https://www.pixiv.net/':
+                    driver.get('https://www.pixiv.net/ajax/user/extra?lang=zh')
+                    cookiesStr = ''
+                    for cookie in driver.get_cookies():
+                        cookiesStr = cookiesStr + cookie['name'] + '=' + cookie['value'] + '; '
+                    print(driver.current_url)
+                    break
             break
     return cookiesStr
+    # return None
 
 
 def doLogin(init):

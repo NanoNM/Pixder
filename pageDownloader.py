@@ -1,4 +1,3 @@
-import os
 import zipfile
 import imageio
 from Util import *
@@ -95,6 +94,7 @@ class Downloader:
         while True:
             try:
                 html = init.se.get(Url, proxies=init.proxies, headers=init.headers, verify=False, ).text
+                print(html)
                 html = json.loads(html)
                 signPixivEntrys = []
                 for dates in html['body']['illustManga']['data']:
