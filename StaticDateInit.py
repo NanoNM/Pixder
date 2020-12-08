@@ -51,7 +51,9 @@ class StaticDateInit(object):
 def init(Cookie, name, minlike, pagenum, thread, classify, userAgent):
     print('随机获取一个UA池的UA')
     ua = Faker()
-    fakeUa = ua.user_agent()
+    fakeUa = ua.user_agent()  # 过时的UA是问题所在!!!!
+    fakeUa = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.75 Safari/537.36'
+
     print('当前UA: ' + fakeUa)
     return StaticDateInit(Cookie, name, minlike, pagenum, thread, classify, None, fakeUa)
     # return StaticDateInit(Cookie, name, minlike, pagenum, thread, classify,"" ,fakeUa)

@@ -348,8 +348,9 @@ if __name__ == '__main__':
                 print('任务完成了: ' + str(((int(BaseData.pagenum) - unfinishedall) / int(BaseData.pagenum)) * 100) + '%')
         elif cmd == 'about':
             print('===========================\n'
-                  'Pixder V3.1.3 by Nanometer\n'
+                  'Pixder V0.3.4 by Nanometer\n'
                   '艾米莉亚有点可爱 同志们 开冲冲\n'
+                  '想和女孩子贴贴 !!!\n'
                   '===========================\n')
         else:
             print('没有一个名为' + cmd + '的命令')
