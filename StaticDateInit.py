@@ -27,7 +27,9 @@ class StaticDateInit(object):
         self.proxies = {}
         self.se = requests.session()
         self.name = parse.quote(name)
-        self.folderName = name.replace(':', '').replace('?', '').replace('\\', '').replace('/', '').replace('*', '').replace('|','').replace('<', '').replace('>', '')
+        self.folderName = name.replace(':', '').replace('?', '').replace('\\', '').replace('/', '').replace('*',
+                                                                                                            '').replace(
+            '|', '').replace('<', '').replace('>', '')
         self.minlike = minlike
         self.pagenum = pagenum
         self.thread = thread
@@ -42,7 +44,6 @@ class StaticDateInit(object):
             'User-Agent': userAgent,
         }
         self.classify = classify
-
         self.userPage = 'https://www.pixiv.net/ajax/user/USERID/profile/all?lang=zh'
         self.userID = UserID
 
@@ -50,7 +51,7 @@ class StaticDateInit(object):
 def init(Cookie, name, minlike, pagenum, thread, classify, userAgent):
     print('随机获取一个UA池的UA')
     ua = Faker()
-    # fakeUa = ua.user_agent()
-    fakeUa = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.75 Safari/537.36'
+    fakeUa = ua.user_agent()
     print('当前UA: ' + fakeUa)
-    return StaticDateInit(Cookie, name, minlike, pagenum, thread, classify, fakeUa)
+    return StaticDateInit(Cookie, name, minlike, pagenum, thread, classify, None, fakeUa)
+    # return StaticDateInit(Cookie, name, minlike, pagenum, thread, classify,"" ,fakeUa)

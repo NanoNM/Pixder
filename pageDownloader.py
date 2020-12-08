@@ -1,3 +1,4 @@
+import os
 import zipfile
 import imageio
 from Util import *
@@ -31,14 +32,14 @@ def ImgDownloader(init, date, url, part, index, R='' + os.sep + '' + os.sep + ''
     try:
         sty = url.split(".")[-1]
         PIC = init.se.get(url, headers=init.headers)
-        if os.path.exists(parse.unquote(init.folderName) + R + '' + os.sep + 'gif'):
+        if os.path.exists(parse.unquote(init.name) + R + '' + os.sep + 'gif'):
             pass
         else:
-            os.makedirs(parse.unquote(init.folderName) + R + '' + os.sep + 'gif')
+            os.makedirs(parse.unquote(init.name) + R + '' + os.sep + 'gif')
         if url.find('img-zip-ugoira') != -1:
-            targeImg = '.' + os.sep + parse.unquote(init.folderName) + R + os.sep + 'gif' + os.sep + date['illustId'] + ' ' + date['userId'] + '.' + sty
+            targeImg = '.' + os.sep + parse.unquote(init.name) + R + os.sep + 'gif' + os.sep + date['illustId'] + ' ' + date['userId'] + '.' + sty
         else:
-            targeImg = '.' + os.sep + parse.unquote(init.folderName) + R + os.sep + date['illustId']+ ' ' + date['userId'] + part +'.' + sty
+            targeImg = '.' + os.sep + parse.unquote(init.name) + R + os.sep + date['illustId']+ ' ' + date['userId'] + part +'.' + sty
         if os.path.exists(targeImg):
             print('图片 ' + url + ' 存在,跳过了!')
             return 0
@@ -76,10 +77,10 @@ def ImgDownloader(init, date, url, part, index, R='' + os.sep + '' + os.sep + ''
         print('下载/解压 ' + url + '失败了!', end='')
         print(e)
         PIC = init.se.get(url, headers=init.headers)
-        if os.path.exists(parse.unquote(init.folderName) + R):
+        if os.path.exists(parse.unquote(init.name) + R):
             pass
         else:
-            os.makedirs(parse.unquote(init.folderName) + R)
+            os.makedirs(parse.unquote(init.name) + R)
         with open(targeImg, mode='wb') as pic:
             pic.write(PIC.content)
         # print('下载 ' + url + '结束了! 请自行检查文件是否成功!')
@@ -94,16 +95,18 @@ class Downloader:
         while True:
             try:
                 html = init.se.get(Url, proxies=init.proxies, headers=init.headers, verify=False, ).text
-                print(html)
+                # print(init.headers)
                 html = json.loads(html)
+                # print(html)
                 signPixivEntrys = []
                 for dates in html['body']['illustManga']['data']:
+                    pass
                     item = {
-                        'illustId': dates['illustId'],
-                        'illustTitle': dates['illustTitle'],
+                        'illustId': dates['id'],
+                        'illustTitle': dates['title'],
                         'tags': dates['tags'],
                         'pageCount': dates['pageCount'],
-                        'isAdContainer': dates['isAdContainer'],
+                        # 'isAdContainer': dates['isAdContainer'],
                         'userId': dates['userId'],
                         'userName': dates['userName'],
                         'width': dates['width'],

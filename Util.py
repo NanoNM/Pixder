@@ -14,6 +14,7 @@ class FileAnalysis:
             obj['original'] = jsonDate['body']['urls']['original']
             obj['likeCon'] = jsonDate['body']['bookmarkCount']
             obj['pageCount'] = jsonDate['body']['pageCount']
+
     # def panterAnalysis(self, date, init):
     #     i = 1
     #     for obj in date:
@@ -54,14 +55,16 @@ class FileAnalysis:
             pass
         else:
             os.makedirs(parse.unquote(init.folderName) + '' + os.sep + 'lastTask')
-        with open('.' + os.sep + parse.unquote(init.folderName) + os.sep + 'lastTask' + os.sep + 'main.log', 'w', encoding='utf-8') as file:
+        with open('.' + os.sep + parse.unquote(init.folderName) + os.sep + 'lastTask' + os.sep + 'main.log', 'w',
+                  encoding='utf-8') as file:
             file.write(json.dumps(unfinishedTaskInfo, ensure_ascii=False))
 
         if os.path.exists(parse.unquote(init.folderName) + '' + os.sep + 'lastTask'):
             pass
         else:
             os.makedirs(parse.unquote(init.folderName) + '' + os.sep + 'lastTask')
-        with open('.' + os.sep + parse.unquote(init.folderName) + os.sep + 'lastTask' + os.sep + threadInfo['threadID'] + '.log', 'w',
+        with open('.' + os.sep + parse.unquote(init.folderName) + os.sep + 'lastTask' + os.sep + threadInfo[
+            'threadID'] + '.log', 'w',
                   encoding='utf-8') as file:
             file.write(json.dumps(threadInfo, ensure_ascii=False))
 
@@ -81,7 +84,10 @@ class FileAnalysis:
         if os.path.exists(init.name + '' + os.sep + 'lastTask'):
             pass
         else:
-            os.makedirs(init.name + '' + os.sep + 'lastTask')
+            try:
+                os.makedirs(init.name + '' + os.sep + 'lastTask')
+            except Exception as e:
+                pass
         with open('.' + os.sep + init.name + os.sep + 'lastTask' + os.sep + 'main.log', 'w', encoding='utf-8') as file:
             file.write(json.dumps(unfinishedTaskInfo, ensure_ascii=False))
 

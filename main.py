@@ -57,7 +57,7 @@ def userInfoGe():
     item = {"projectName": 'settingFile',
             'Cookie': cookie,
             'user-agent': '废弃了的'}
-    with open('.' + os.sep + 'userInfo.config', 'w', encoding='utf-8') as file:
+    with open('.' + os.sep + 'userInfo.json', 'w', encoding='utf-8') as file:
         file.write(json.dumps(item, ensure_ascii=False))
     print("请稍等 ..")
 
@@ -67,11 +67,11 @@ def start(Name):
     Index = True
     while Index:
         print("配置文件加载中 . . .")
-        if os.path.exists('.' + os.sep + 'userInfo.config'):
-            # if os.path.exists('.\\userInfo.config'):
+        if os.path.exists('.' + os.sep + 'userInfo.json'):
+            # if os.path.exists('.\\userInfo.json'):
             global BaseData, NewTask
             Index = False
-            with open('.' + os.sep + 'userInfo.config', 'r', encoding='utf-8') as file:
+            with open('.' + os.sep + 'userInfo.json', 'r', encoding='utf-8') as file:
                 content = file.read()
                 config = json.loads(content)
             if os.path.exists(parse.unquote(folderName) + '' + os.sep + 'lastTask' + os.sep + 'main.log'):
@@ -189,10 +189,10 @@ def panterStart(userID):
     Index = True
     while Index:
         print("配置文件加载中 . . .")
-        if os.path.exists('.' + os.sep + 'userInfo.config'):
+        if os.path.exists('.' + os.sep + 'userInfo.json'):
             global BaseData, NewTask
             Index = False
-            with open('.' + os.sep + 'userInfo.config', 'r', encoding='utf-8') as file:
+            with open('.' + os.sep + 'userInfo.json', 'r', encoding='utf-8') as file:
                 content = file.read()
                 config = json.loads(content)
             if os.path.exists(userID + '' + os.sep + 'lastTask' + os.sep + 'main.log'):

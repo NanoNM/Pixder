@@ -22,12 +22,14 @@ def seleLogin(init=None):
     # element_pixiv_id = driver.find_elements_by_class_name('input-field')
     # element_password = driver.find_element_by_name('password')
     # time.sleep(10)
+    print("请等待浏览器窗口的加载并登陆您的账号 程序并不会记录您的账户信息")
     while True:
         time.sleep(1)
         if driver.current_url == 'https://www.pixiv.net/':
+            print("请随意点击一张图片")
             while True:
                 if driver.current_url != 'https://www.pixiv.net/':
-                    driver.get('https://www.pixiv.net/ajax/user/extra?lang=zh')
+                    driver.get('https://www.pixiv.net/ajax/search/tags/miku?lang=zh')
                     cookiesStr = ''
                     for cookie in driver.get_cookies():
                         cookiesStr = cookiesStr + cookie['name'] + '=' + cookie['value'] + '; '
