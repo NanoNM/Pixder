@@ -1,3 +1,4 @@
+import _thread
 import shutil, threading
 import sys
 import time
@@ -34,6 +35,22 @@ classify = ''
 mode = ''
 threads = []
 safeStop = True
+gcdindex = False
+
+
+def initDate():
+    global BaseData, NewTask, gcdindex, name, minlike, pagenum, thread, classify, mode, threads, safeStop
+    BaseData = None
+    NewTask = True
+    gcdindex = False
+    name = ''
+    minlike = ''
+    pagenum = ''
+    thread = ''
+    classify = ''
+    mode = ''
+    threads = []
+    safeStop = True
 
 
 def userInfoGe():
@@ -52,7 +69,9 @@ def userInfoGe():
 
 
 def start(Name):
-    folderName = name.replace(':', '').replace('?', '').replace('\\', '').replace('/', '').replace('*', '').replace('|','').replace('<', '').replace('>', '')
+    folderName = name.replace(':', '').replace('?', '').replace('\\', '').replace('/', '').replace('*', '').replace('|',
+                                                                                                                    '').replace(
+        '<', '').replace('>', '')
     Index = True
     while Index:
         print("配置文件加载中 . . .")
@@ -85,7 +104,8 @@ def start(Name):
                         while thrIndex < int(openThread):
                             path = 'thread' + str(thrIndex)
                             print(path + '文件读取尝试!')
-                            with open(parse.unquote(folderName) + '' + os.sep + 'lastTask' + os.sep + path + '.log', 'r',
+                            with open(parse.unquote(folderName) + '' + os.sep + 'lastTask' + os.sep + path + '.log',
+                                      'r',
                                       encoding='utf-8') as file:
                                 last = file.read()
                                 threadLast = json.loads(last)
@@ -235,13 +255,11 @@ def panterStart(userID):
             userInfoGe()
 
 
-if __name__ == '__main__':
-    # 执行初始化操作
+def __connectTest():
     while True:
         print("PixSpider by Nanometer")
-        print("建议不要自行关闭程序 强行关闭可能会导致图片下载异常")
-        print("网络问题也会导致图片下载异常")
-        print("网络连通性检查中")
+        print("建议不要自行关闭程序,强行关闭可能会导致图片下载异常, 网络问题也会导致图片下载异常!")
+        print("网络连通性检查中", end=' ...  ')
         try:
             html = requests.session().get("https://www.pixiv.net", headers={
                 'Referer': 'https://www.pixiv.net',
@@ -253,47 +271,26 @@ if __name__ == '__main__':
             print(e)
             i = input('输入E停止程序, 输入其他重启测试\n')
             if i == 'E' or i == 'e':
-                sys.exit(1)
+                sys.exit(1001)
     print("网络连通性检查通过")
 
-    mode = input('模式选择 \n1. 遍历模式(默认)\n2. 画师模式\n3. 画模式\n') or '1'
-    if mode == '1':
-        print('当前模式 遍历模式 如果是想继续上次任务 只需要输入名字 其他全部空白')
-        name = input('输入爬取插图的名字: ')
-        minlike = input('最小点赞数量 默认5000: ') or '5000'
-        pagenum = input('最大爬取页面 默认100: ') or '100'
-        thread = input('启用线程数 注意 线程数一定要被最大爬取页面整除并且不能等于最大页面数!!!! 1除外 默认20: ') or '20'
-        classify = '1'
-        classify = input('分级模式选择 1: 大众级 2: 限制级+大众级 3: 限制级 默认1: ') or '1'
-        start(parse.unquote(name))
-        # 模拟登陆 需要人机验证 我不会
-        # doLogin(BaseData)
-        if int(BaseData.thread) > 1 and NewTask:
-            print("检测到需要开启多线程! 正在处理线程问题! 请稍等 ... ")
-            evPage = int(BaseData.pagenum) // int(BaseData.thread)
-            index = 0
-            print("线程准备启动了! 请稍等 ... ")
-            while index < int(BaseData.thread):
-                # Thread =
-                thr = work(1, "Thread" + str(index), evPage * index + 1, evPage * (index + 1))
-                thr.start()
-                threads.append(thr)
-                index += 1
-        elif NewTask:
-            realStart(1, BaseData.pagenum)
 
-    elif mode == '2':
-        print('当前模式 画师模式 如果是想继续上次任务 只需要输入画师ID 其他全部空白')
-        userID = input('请输入画师ID') or None
-        minlike = input('最小点赞数量 默认5000: ') or '5000'
-        # thread = input('输入启用线程线程 默认1: ') or '1'
-        thread = '1'
-        classify = '1'
-        classify = input('分级模式选择 1: 大众级 2: 限制级+大众级 3: 限制级 默认1: ') or '1'
-        ints = panterStart(userID)
-        if ints == 0:
-            pass
-        else:
+if __name__ == '__main__':
+    # 执行初始化操作
+    while True:
+        __connectTest()
+        mode = input('模式选择 \n1. 标签遍历模式(默认) 2. 画师模式\n') or '1'
+        if mode == '1':
+            print('当前模式:标签遍历模式(如果是想继续上次任务只需要输入名字其他全部空白)')
+            name = input('输入爬取插图的名字: ')
+            minlike = input('最小点赞数量 默认2000: ') or '2000'
+            pagenum = input('最大爬取页面 默认100: ') or '100'
+            thread = input('启用线程数 注意 线程数一定要被最大爬取页面整除并且不能等于最大页面数!!!! 1除外 默认20: ') or '20'
+            classify = '1'
+            classify = input('分级模式选择 1: 大众级 2: 限制级+大众级(默认) 3: 限制级 默认1: ') or '2'
+            start(parse.unquote(name))
+            # 模拟登陆 需要人机验证 我不会
+            # doLogin(BaseData)
             if int(BaseData.thread) > 1 and NewTask:
                 print("检测到需要开启多线程! 正在处理线程问题! 请稍等 ... ")
                 evPage = int(BaseData.pagenum) // int(BaseData.thread)
@@ -305,41 +302,70 @@ if __name__ == '__main__':
                     thr.start()
                     threads.append(thr)
                     index += 1
-            else:
-                realStart()
-    elif mode == '3':
-        print('当前模式 画模式(未制作) 如果是想继续上次任务 只需要输入画师ID 其他全部空白')
-        pass
+            elif NewTask:
+                realStart(1, BaseData.pagenum)
 
-    while True:
-        cmd = input()
-        if cmd == "status":
-            for thr in threads:
-                status = 'Stoped'
-                if thr.is_alive():
-                    status = 'Alive'
+        elif mode == '2':
+            print('当前模式:画师模式(如果是想继续上次任务只需要输入画师ID其他全部空白)')
+            userID = input('请输入画师ID') or None
+            minlike = input('最小点赞数量 默认5000: ') or '5000'
+            # thread = input('输入启用线程线程 默认1: ') or '1'
+            thread = '1'
+            classify = '1'
+            classify = input('分级模式选择 1: 大众级 2: 限制级+大众级(默认) 3: 限制级 ') or '2'
+            ints = panterStart(userID)
+            if ints == 0:
+                pass
+            else:
+                if int(BaseData.thread) > 1 and NewTask:
+                    print("检测到需要开启多线程! 正在处理线程问题! 请稍等 ... ")
+                    evPage = int(BaseData.pagenum) // int(BaseData.thread)
+                    index = 0
+                    print("线程准备启动了! 请稍等 ... ")
+                    while index < int(BaseData.thread):
+                        # Thread =
+                        thr = work(1, "Thread" + str(index), evPage * index + 1, evPage * (index + 1))
+                        thr.start()
+                        threads.append(thr)
+                        index += 1
                 else:
+                    realStart()
+        elif mode == '3':
+            print('当前模式 画模式(未制作) 如果是想继续上次任务 只需要输入画师ID 其他全部空白')
+            pass
+
+        while True:
+            time.sleep(0.25)
+            cmd = input()
+            if cmd == "status":
+                for thr in threads:
                     status = 'Stoped'
-                print('线程' + thr.name + '的状态是: ' + status)
-        elif cmd == "stops":
-            safeStop = False
-            print("请等待所有线程退出后即可安全 退出")
-        elif cmd == "msn":
-            unfinishedall = 0
-            index = False
-            for thr in threads:
-                if thr.unfinished is None:
-                    print('还没有计算完成 稍后再试')
-                    break
-                unfinishedall = unfinishedall + thr.unfinished
-                index = True
-            if index:
-                print('任务完成了: ' + str(((int(BaseData.pagenum) - unfinishedall) / int(BaseData.pagenum)) * 100) + '%')
-        elif cmd == 'about':
-            print('===========================\n'
-                  'Pixder V0.3.4 by Nanometer\n'
-                  '艾米莉亚有点可爱 同志们 开冲冲\n'
-                  '想和女孩子贴贴 !!!\n'
-                  '===========================\n')
-        else:
-            print('没有一个名为' + cmd + '的命令')
+                    if thr.is_alive():
+                        status = 'Alive'
+                    else:
+                        status = 'Stoped'
+                    print('线程' + thr.name + '的状态是: ' + status)
+            elif cmd == "stops":
+                safeStop = False
+                print("请等待所有线程退出后即可安全 退出")
+            elif cmd == "msn":
+                unfinishedall = 0
+                index = False
+                for thr in threads:
+                    if thr.unfinished is None:
+                        print('还没有计算完成 稍后再试')
+                        break
+                    unfinishedall = unfinishedall + thr.unfinished
+                    index = True
+                if index:
+                    print(
+                        '任务完成了: ' + str(((int(BaseData.pagenum) - unfinishedall) / int(BaseData.pagenum)) * 100) + '%')
+            elif cmd == 'about':
+                print('===========================\n'
+                      'Pixder V0.3.5 by Nanometer\n'
+                      '艾米莉亚有点可爱 同志们 开冲冲\n'
+                      '想和女孩子贴贴 !!!\n'
+                      '===========================\n')
+            else:
+                print('没有一个名为' + cmd + '的命令')
+

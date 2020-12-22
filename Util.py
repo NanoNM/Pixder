@@ -81,13 +81,15 @@ class FileAnalysis:
             "all": mode,
 
         }
-        if os.path.exists(init.name + '' + os.sep + 'lastTask'):
-            pass
-        else:
-            try:
-                os.makedirs(init.name + '' + os.sep + 'lastTask')
-            except Exception as e:
-                pass
+
+        try:
+            os.mkdir(init.name + '' + os.sep + 'lastTask')
+        except OSError as error:
+            print(error)
+        # if os.path.exists():
+        #     pass
+        # else:
+        os.makedirs(init.name + '' + os.sep + 'lastTask')
         with open('.' + os.sep + init.name + os.sep + 'lastTask' + os.sep + 'main.log', 'w', encoding='utf-8') as file:
             file.write(json.dumps(unfinishedTaskInfo, ensure_ascii=False))
 

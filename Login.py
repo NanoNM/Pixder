@@ -40,6 +40,7 @@ def seleLogin(init=None):
     # return None
 
 
+# 废弃的
 def doLogin(init):
     index = 1
     while index < 6:
