@@ -1,13 +1,10 @@
-import _thread
 import shutil, threading
 import sys
 import time
 
 import StaticDateInit
-import pageDownloader
 from pageDownloader import *
 from Login import seleLogin
-from faker import Faker
 import requests
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
