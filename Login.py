@@ -5,6 +5,7 @@ import random
 import urllib3
 from bs4 import BeautifulSoup
 from selenium import webdriver
+from selenium.common.exceptions import WebDriverException
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 '''
@@ -14,7 +15,14 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
 def seleLogin(init=None):
-    driver = webdriver.Chrome('.' + os.sep + 'webdriver' + os.sep + 'chromedriver')
+    driver = webdriver.Edge('.' + os.sep + 'webdriver' + os.sep + 'msedgedriver')
+
+    # while True:
+        # driver = webdriver.Chrome('.' + os.sep + 'webdriver' + os.sep + 'chromedriver')
+
+    # try:
+    # except WebDriverException as e:
+
     # driver = webdriver.Firefox()#这里是火狐的浏览器运行方法
     # get 方法 打开指定网址
     driver.get(

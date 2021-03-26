@@ -284,7 +284,7 @@ if __name__ == '__main__':
             pagenum = input('最大爬取页面 默认100: ') or '100'
             thread = input('启用线程数 注意 线程数一定要被最大爬取页面整除并且不能等于最大页面数!!!! 1除外 默认20: ') or '20'
             classify = '1'
-            classify = input('分级模式选择 1: 大众级 2: 限制级+大众级(默认) 3: 限制级 默认1: ') or '2'
+            classify = input('分级模式选择 1: 大众级 2: 限制级+大众级(默认) 3: 限制级') or '2'
             start(parse.unquote(name))
             # 模拟登陆 需要人机验证 我不会
             # doLogin(BaseData)
@@ -309,7 +309,7 @@ if __name__ == '__main__':
             # thread = input('输入启用线程线程 默认1: ') or '1'
             thread = '1'
             classify = '1'
-            classify = input('分级模式选择 1: 大众级 2: 限制级+大众级(默认) 3: 限制级 ') or '2'
+            classify = input('分级模式选择 1: 大众级 2: 限制级+大众级(默认) 3: 限制级') or '2'
             ints = panterStart(userID)
             if ints == 0:
                 pass
@@ -359,7 +359,7 @@ if __name__ == '__main__':
                         '任务完成了: ' + str(((int(BaseData.pagenum) - unfinishedall) / int(BaseData.pagenum)) * 100) + '%')
             elif cmd == 'about':
                 print('===========================\n'
-                      'Pixder V0.3.5 by Nanometer\n'
+                      'Pixder V0.3.8 by Nanometer\n'
                       '艾米莉亚有点可爱 同志们 开冲冲\n'
                       '想和女孩子贴贴 !!!\n'
                       '===========================\n')
