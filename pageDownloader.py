@@ -31,7 +31,7 @@ def ImgDownloader(init, date, url, part, index, R='' + os.sep + '' + os.sep + ''
     global targeImg
     try:
         sty = url.split(".")[-1]
-        PIC = init.se.get(url, headers=init.headers)
+        PIC = init.se.get(url,proxies=init.proxies, headers=init.headers)
         if os.path.exists(parse.unquote(init.name) + R + '' + os.sep + 'gif'):
             pass
         else:
@@ -76,7 +76,7 @@ def ImgDownloader(init, date, url, part, index, R='' + os.sep + '' + os.sep + ''
     except Exception as e:
         print('下载/解压 ' + url + '失败了!', end='')
         print(e)
-        PIC = init.se.get(url, headers=init.headers)
+        PIC = init.se.get(url,proxies=init.proxies, headers=init.headers)
         if os.path.exists(parse.unquote(init.name) + R):
             pass
         else:

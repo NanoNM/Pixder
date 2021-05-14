@@ -34,7 +34,6 @@ threads = []
 safeStop = True
 gcdindex = False
 
-
 def initDate():
     global BaseData, NewTask, gcdindex, name, minlike, pagenum, thread, classify, mode, threads, safeStop
     BaseData = None
@@ -52,12 +51,21 @@ def initDate():
 
 def userInfoGe():
     print("您是第一次使用本程序? 请按照要求输入信息.")
+    address = input("请输入代理地址 默认127.0.0.1") or '127.0.0.1'
+    port = input("请输入代理端口 默认7890") or '7890'
+    proxies = {
+        "http": "http://" + address + ":" + port,
+        "https": "http://" + address + ":" + port,
+    }
+    __connectTest(proxies)
     loginMod = input('你已经知道你的cookie了? y/n') or 'n'
     if loginMod == 'n' or loginMod == 'N':
+        print("确定你所使用的浏览器对应webdriver")
         cookie = seleLogin()
     else:
         cookie = input("输入您的Cookie\n")
     item = {"projectName": 'settingFile',
+            'proxies': proxies,
             'Cookie': cookie,
             'user-agent': '废弃了的'}
     with open('.' + os.sep + 'userInfo.json', 'w', encoding='utf-8') as file:
@@ -66,9 +74,7 @@ def userInfoGe():
 
 
 def start(Name):
-    folderName = name.replace(':', '').replace('?', '').replace('\\', '').replace('/', '').replace('*', '').replace('|',
-                                                                                                                    '').replace(
-        '<', '').replace('>', '')
+    folderName = name.replace(':', '').replace('?', '').replace('\\', '').replace('/', '').replace('*', '').replace('|','').replace('<', '').replace('>', '')
     Index = True
     while Index:
         print("配置文件加载中 . . .")
@@ -90,12 +96,12 @@ def start(Name):
                     openThread = last['thread']
                     if int(openThread) < 2:
                         BaseData = StaticDateInit.init(config['Cookie'], Name, last['minlike'], last['MaxPage'],
-                                                       last['thread'], last['classify'], config['user-agent'])
+                                                       last['thread'], last['classify'], config['proxies'], config['user-agent'])
                         realStart(last['nowPage'], last['MaxPage'])
                     else:
                         print("检测到需要开启多线程! 正在处理线程问题! 请稍等 ... ")
                         BaseData = StaticDateInit.init(config['Cookie'], Name, last['minlike'], last['MaxPage'],
-                                                       last['thread'], last['classify'], config['user-agent'])
+                                                       last['thread'], last['classify'], config['proxies'], config['user-agent'])
                         thrIndex = 0
                         print("线程准备启动了! 请稍等 ... ")
                         while thrIndex < int(openThread):
@@ -116,10 +122,10 @@ def start(Name):
                             thrIndex += 1
                 else:
                     shutil.rmtree(parse.unquote(folderName) + '' + os.sep + 'lastTask')
-                    BaseData = StaticDateInit.init(config['Cookie'], Name, minlike, pagenum, thread, classify,
+                    BaseData = StaticDateInit.init(config['Cookie'], Name, minlike, pagenum, thread, classify, config['proxies'],
                                                    config['user-agent'])
             else:
-                BaseData = StaticDateInit.init(config['Cookie'], Name, minlike, pagenum, thread, classify,
+                BaseData = StaticDateInit.init(config['Cookie'], Name, minlike, pagenum, thread, classify, config['proxies'],
                                                config['user-agent'])
 
             print("欢迎使用本程序!")
@@ -173,7 +179,7 @@ def realStart(Start='null', Stop='null', threadID=None, threadStart=0, threadSto
             for obj in dates:
                 Downloader.picDownloader(BaseData, obj)
             Start += 1
-
+    print("下载结束 重启开始新的下载进程")
 
 class work(threading.Thread):
     def __init__(self, threadID, name, page, stopPage):
@@ -190,7 +196,7 @@ class work(threading.Thread):
         realStart(self.page, self.stopPage, self.name, self.page, self.stopPage, self.safeStop)
         print("退出线程：" + self.name)
 
-
+# 未完成的方法 有问题 问题贼大 未完成项目的问题
 def panterStart(userID):
     Index = True
     while Index:
@@ -208,20 +214,19 @@ def panterStart(userID):
                     with open(userID + '' + os.sep + 'lastTask' + os.sep + 'main.log', 'r', encoding='utf-8') as file:
                         last = file.read()
                         last = json.loads(last)
-                    openThread = last['thread']
+                    openThread = 1
                     if int(openThread) < 2:
-                        with open(userID + '' + os.sep + 'lastTask' + os.sep + 'None.log', 'r',
-                                  encoding='utf-8') as file:
+                        with open(userID + '' + os.sep + 'lastTask' + os.sep + 'main.log', 'r',encoding='utf-8') as file:
                             lastT = file.read()
                             lastT = json.loads(lastT)
                         BaseData = StaticDateInit.init(config['Cookie'], userID, last['minlike'], last['MaxPage'],
-                                                       last['thread'], last['classify'], config['user-agent'])
+                                                       last['thread'], last['classify'], config['proxies'],config['user-agent'])
                         realStart(last['nowPage'], last['MaxPage'], None, None, None, lastT['this'])
                         return 0
                     else:
                         print("检测到需要开启多线程! 正在处理线程问题! 请稍等 ... ")
                         BaseData = StaticDateInit.init(config['Cookie'], userID, last['minlike'], last['MaxPage'],
-                                                       last['thread'], last['classify'], config['user-agent'])
+                                                       last['thread'], last['classify'], config['proxies'],config['user-agent'])
                         thrIndex = 0
                         print("线程准备启动了! 请稍等 ... ")
                         while thrIndex < int(openThread):
@@ -242,26 +247,26 @@ def panterStart(userID):
                             return 0
                 else:
                     shutil.rmtree(userID + '' + os.sep + 'lastTask')
-                    BaseData = StaticDateInit.init(config['Cookie'], userID, minlike, pagenum, thread, classify,
+                    BaseData = StaticDateInit.init(config['Cookie'], userID, minlike, pagenum, thread, classify,config['proxies'],
                                                    config['user-agent'])
             else:
-                BaseData = StaticDateInit.init(config['Cookie'], userID, minlike, pagenum, thread, classify,
+                BaseData = StaticDateInit.init(config['Cookie'], userID, minlike, pagenum, thread, classify,config['proxies'],
                                                config['user-agent'])
             print("欢迎使用本程序!")
         else:
             userInfoGe()
 
 
-def __connectTest():
+def __connectTest(proxies):
     while True:
         print("PixSpider by Nanometer")
         print("建议不要自行关闭程序,强行关闭可能会导致图片下载异常, 网络问题也会导致图片下载异常!")
         print("网络连通性检查中", end=' ...  ')
         try:
-            html = requests.session().get("https://www.pixiv.net", headers={
+            html = requests.session().get("https://www.pixiv.net", proxies=proxies, headers={
                 'Referer': 'https://www.pixiv.net',
-                'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:15.0) Gecko/20100101 Firefox/15.0.1'},
-                                          verify=False, timeout=6)
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36 Edg/90.0.818.56'},
+                                          verify=False, timeout=3)
             break
         except Exception as e:
             print("网络检查失败了, 原因: ", end='')
@@ -274,8 +279,10 @@ def __connectTest():
 
 if __name__ == '__main__':
     # 执行初始化操作
+    if not os.path.exists('.' + os.sep + 'userInfo.json'):
+        userInfoGe()
     while True:
-        __connectTest()
+        #
         mode = input('模式选择 \n1. 标签遍历模式(默认) 2. 画师模式\n') or '1'
         if mode == '1':
             print('当前模式:标签遍历模式(如果是想继续上次任务只需要输入名字其他全部空白)')
@@ -294,7 +301,6 @@ if __name__ == '__main__':
                 index = 0
                 print("线程准备启动了! 请稍等 ... ")
                 while index < int(BaseData.thread):
-                    # Thread =
                     thr = work(1, "Thread" + str(index), evPage * index + 1, evPage * (index + 1))
                     thr.start()
                     threads.append(thr)
@@ -303,7 +309,7 @@ if __name__ == '__main__':
                 realStart(1, BaseData.pagenum)
 
         elif mode == '2':
-            print('当前模式:画师模式(如果是想继续上次任务只需要输入画师ID其他全部空白)')
+            print('当前模式:画师模式(继续上次任务未完成)')
             userID = input('请输入画师ID') or None
             minlike = input('最小点赞数量 默认5000: ') or '5000'
             # thread = input('输入启用线程线程 默认1: ') or '1'
@@ -311,24 +317,26 @@ if __name__ == '__main__':
             classify = '1'
             classify = input('分级模式选择 1: 大众级 2: 限制级+大众级(默认) 3: 限制级') or '2'
             ints = panterStart(userID)
-            if ints == 0:
-                pass
-            else:
-                if int(BaseData.thread) > 1 and NewTask:
-                    print("检测到需要开启多线程! 正在处理线程问题! 请稍等 ... ")
-                    evPage = int(BaseData.pagenum) // int(BaseData.thread)
-                    index = 0
-                    print("线程准备启动了! 请稍等 ... ")
-                    while index < int(BaseData.thread):
-                        # Thread =
-                        thr = work(1, "Thread" + str(index), evPage * index + 1, evPage * (index + 1))
-                        thr.start()
-                        threads.append(thr)
-                        index += 1
-                else:
-                    realStart()
+            realStart()
+            # if ints == 0:
+            #     pass
+            # else:
+            #     if int(BaseData.thread) > 1 and NewTask:
+            #         print("检测到需要开启多线程! 正在处理线程问题! 请稍等 ... ")
+            #         evPage = int(BaseData.pagenum) // int(BaseData.thread)
+            #         index = 0
+            #         print("线程准备启动了! 请稍等 ... ")
+            #         while index < int(BaseData.thread):
+            #             # Thread =
+            #             thr = work(1, "Thread" + str(index), evPage * index + 1, evPage * (index + 1))
+            #             thr.start()
+            #             threads.append(thr)
+            #             index += 1
+            #     else:
+            #         realStart()
         elif mode == '3':
             print('当前模式 画模式(未制作) 如果是想继续上次任务 只需要输入画师ID 其他全部空白')
+            print('meizuone')
             pass
 
         while True:
@@ -359,10 +367,9 @@ if __name__ == '__main__':
                         '任务完成了: ' + str(((int(BaseData.pagenum) - unfinishedall) / int(BaseData.pagenum)) * 100) + '%')
             elif cmd == 'about':
                 print('===========================\n'
-                      'Pixder V0.3.8 by Nanometer\n'
+                      'Pixder V0.3.10 by Nanometer\n'
                       '艾米莉亚有点可爱 同志们 开冲冲\n'
                       '想和女孩子贴贴 !!!\n'
                       '===========================\n')
             else:
                 print('没有一个名为' + cmd + '的命令')
-

@@ -13,7 +13,7 @@ class StaticDateInit(object):
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
-    def __init__(self, Cookie, name, minlike, pagenum, thread, classify, UserID='null', userAgent=None):
+    def __init__(self, Cookie, name, minlike, pagenum, thread, classify, proxies,UserID='null' ,userAgent=None):
         self.baseUrl = 'https://accounts.pixiv.net/login?lang=zh&source=pc&view_type=page&ref=wwwtop_accounts_index'
         self.loginUrl = 'https://accounts.pixiv.net/api/login?lang=zh'
         self.mainUrl = 'http://www.pixiv.net'
@@ -24,7 +24,7 @@ class StaticDateInit(object):
         self.loadPath = ''
         self.ipList = []
         self.token = ''
-        self.proxies = {}
+        self.proxies = proxies
         self.se = requests.session()
         self.name = parse.quote(name)
         self.folderName = name.replace(':', '').replace('?', '').replace('\\', '').replace('/', '').replace('*',
@@ -48,12 +48,12 @@ class StaticDateInit(object):
         self.userID = UserID
 
 
-def init(Cookie, name, minlike, pagenum, thread, classify, userAgent):
+def init(Cookie, name, minlike, pagenum, thread, classify, proxies, userAgent):
     # print('随机获取一个UA池的UA')
     ua = Faker()
     fakeUa = ua.user_agent()  # 过时的UA是问题所在!!!!
     fakeUa = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.75 Safari/537.36'
 
     # print('当前UA: ' + fakeUa)
-    return StaticDateInit(Cookie, name, minlike, pagenum, thread, classify, None, fakeUa)
+    return StaticDateInit(Cookie, name, minlike, pagenum, thread, classify, proxies, None, fakeUa)
     # return StaticDateInit(Cookie, name, minlike, pagenum, thread, classify,"" ,fakeUa)
