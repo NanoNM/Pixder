@@ -51,6 +51,9 @@ def initDate():
 
 def userInfoGe():
     print("您是第一次使用本程序? 请按照要求输入信息.")
+    print("程序将使用您cookie来登录pixiv， 程序在运行时会获取你的cookie，关于cookie你可能想了解 https://baike.baidu.com/item/cookie/1119?fr=aladdin")
+    if input("同意使用Cookie Y 退出程序 N") == ('N' or 'n'):
+        sys.exit()
     address = input("请输入代理地址 默认127.0.0.1") or '127.0.0.1'
     port = input("请输入代理端口 默认7890") or '7890'
     proxies = {
@@ -179,7 +182,6 @@ def realStart(Start='null', Stop='null', threadID=None, threadStart=0, threadSto
             for obj in dates:
                 Downloader.picDownloader(BaseData, obj)
             Start += 1
-    print("下载结束 重启开始新的下载进程")
 
 class work(threading.Thread):
     def __init__(self, threadID, name, page, stopPage):
@@ -266,7 +268,7 @@ def __connectTest(proxies):
             html = requests.session().get("https://www.pixiv.net", proxies=proxies, headers={
                 'Referer': 'https://www.pixiv.net',
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36 Edg/90.0.818.56'},
-                                          verify=False, timeout=3)
+                                          verify=False, timeout=5)
             break
         except Exception as e:
             print("网络检查失败了, 原因: ", end='')
@@ -281,6 +283,10 @@ if __name__ == '__main__':
     # 执行初始化操作
     if not os.path.exists('.' + os.sep + 'userInfo.json'):
         userInfoGe()
+    with open('.' + os.sep + 'userInfo.json', 'r', encoding='utf-8') as file:
+        content = file.read()
+        config = json.loads(content)
+    __connectTest(config['proxies'])
     while True:
         #
         mode = input('模式选择 \n1. 标签遍历模式(默认) 2. 画师模式\n') or '1'
