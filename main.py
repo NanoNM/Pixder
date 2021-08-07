@@ -373,7 +373,7 @@ if __name__ == '__main__':
                         '任务完成了: ' + str(((int(BaseData.pagenum) - unfinishedall) / int(BaseData.pagenum)) * 100) + '%')
             elif cmd == 'about':
                 print('===========================\n'
-                      'Pixder V0.3.10 by Nanometer\n'
+                      'Pixder V0.3.12 by Nanometer\n'
                       '艾米莉亚有点可爱 同志们 开冲冲\n'
                       '想和女孩子贴贴 !!!\n'
                       '===========================\n')
