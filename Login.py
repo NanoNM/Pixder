@@ -15,83 +15,85 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
 def seleLogin(init=None):
-    str = input("\n"
-                "\n"
-                "\n"
-                "\n"
-                "\n"
-                "\n"
-                "\n"
-                "\n"
-                "\n"
-                "\n"
-                "\n"
-                "\n"
-                "\n"
-                "\n"
-                "\n"
-                "\n"
-                "\n"
-                "\n"
-                "\n"
-                "\n"
-                "\n"
-                "\n"
-                "\n"
-                "\n"
-                "\n"
-                "\n"
-                "警告！\n"
-                "模拟登陆行为是通过selenium webdriver来进行的\n"
-                "webdriver主流版本下载地址\n"
-                "Firefox浏览器驱动：https://github.com/mozilla/geckodriver/releases\n"
-                "Chrome浏览器驱动：https://npm.taobao.org/mirrors/chromedriver , "
-                "https://sites.google.com/a/chromium.org/chromedriver/home\n"
-                "IE浏览器驱动：http://selenium-release.storage.googleapis.com/index.html\n"
-                "opera浏览器驱动：https://github.com/operasoftware/operachromiumdriver/releases\n"
-                "Edge浏览器驱动：https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver\n"
-                "PhantomJS浏览器驱动：https://phantomjs.org/\n"
-                "具体浏览器版本查看方式请自行百度\n"
-                "请将下载好的webdriver程序的名字变更为webdriver\n"
-                "等待浏览器启动后\n"
-                "重要！！！ 请确保您的浏览器与webdriver版本一一对应 请做好准备后输入浏览器名称\n"
-                "1.Edge(win10自带)\n"
-                "2.Chrome(谷歌)\n"
-                "3.Firefox(火狐)\n"
-                "4.opera(欧朋)\n"
-                "5.IE(不会去测试了)\n"
-                "6.safari(苹果自带) 不需要下载webdriver\n"
-                "不输入或者输入其他则为退出程序"
-                ",请输入：")
-    # if str is "y" or str is "Y":
-    #     pass
-    # else:
-    #     sys.exit(0)
-    if str is "1":
-        driver = webdriver.Edge('.' + os.sep + 'webdriver' + os.sep + 'webdriver')
-    elif str is "2":
-        driver = webdriver.Chrome('.' + os.sep + 'webdriver' + os.sep + 'webdriver')
-    elif str is "3":
-        driver = webdriver.Firefox('.' + os.sep + 'webdriver' + os.sep + 'webdriver')
-    elif str is "4":
-        driver = webdriver.Opera('.' + os.sep + 'webdriver' + os.sep + 'webdriver')
-    elif str is "5":
-        driver = webdriver.Ie('.' + os.sep + 'webdriver' + os.sep + 'webdriver')
-    elif str is "6":
-        driver = webdriver.Safari()
-    else:
-        sys.exit(0)
-    # while True:
-    # driver = webdriver.Chrome('.' + os.sep + 'webdriver' + os.sep + 'chromedriver')
-    # try:
-    # except WebDriverException as e:
-    # driver = webdriver.Firefox()#这里是火狐的浏览器运行方法
-    # get 方法 打开指定网址
-    driver.get(
-        'https://accounts.pixiv.net/login?return_to=https%3A%2F%2Fwww.pixiv.net%2F&lang=zh&source=pc&view_type=page')
-    # element_pixiv_id = driver.find_elements_by_class_name('input-field')
-    # element_password = driver.find_element_by_name('password')
-    # time.sleep(10)
+    while True:
+        str = input("\n"
+                    "\n"
+                    "\n"
+                    "\n"
+                    "\n"
+                    "\n"
+                    "\n"
+                    "\n"
+                    "\n"
+                    "\n"
+                    "\n"
+                    "\n"
+                    "\n"
+                    "\n"
+                    "\n"
+                    "\n"
+                    "\n"
+                    "\n"
+                    "\n"
+                    "\n"
+                    "\n"
+                    "\n"
+                    "\n"
+                    "\n"
+                    "\n"
+                    "\n"
+                    "警告！\n"
+                    "模拟登陆行为是通过selenium webdriver来进行的\n"
+                    "webdriver主流版本下载地址\n"
+                    "Firefox浏览器驱动：https://github.com/mozilla/geckodriver/releases\n"
+                    "Chrome浏览器驱动：https://npm.taobao.org/mirrors/chromedriver , "
+                    "https://sites.google.com/a/chromium.org/chromedriver/home\n"
+                    "IE浏览器驱动：http://selenium-release.storage.googleapis.com/index.html\n"
+                    "opera浏览器驱动：https://github.com/operasoftware/operachromiumdriver/releases\n"
+                    "Edge浏览器驱动：https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver\n"
+                    "PhantomJS浏览器驱动：https://phantomjs.org/\n"
+                    "具体浏览器版本查看方式请自行百度\n"
+                    "请将下载好的webdriver程序的名字变更为webdriver\n"
+                    "等待浏览器启动后\n"
+                    "重要！！！ 请确保您的浏览器与webdriver版本一一对应 请做好准备后输入浏览器名称\n"
+                    "1.Edge(win10自带)\n"
+                    "2.Chrome(谷歌)\n"
+                    "3.Firefox(火狐)\n"
+                    "4.opera(欧朋)\n"
+                    "5.IE(不会去测试了)\n"
+                    "6.safari(苹果自带) 不需要下载webdriver\n"
+                    "不输入或者输入其他则为退出程序"
+                    ",请输入：")
+        # if str is "y" or str is "Y":
+        #     pass
+        # else:
+        #     sys.exit(0)
+        try:
+            if str is "1":
+                driver = webdriver.Edge('.' + os.sep + 'webdriver' + os.sep + 'webdriver')
+            elif str is "2":
+                driver = webdriver.Chrome('.' + os.sep + 'webdriver' + os.sep + 'webdriver')
+            elif str is "3":
+                driver = webdriver.Firefox('.' + os.sep + 'webdriver' + os.sep + 'webdriver')
+            elif str is "4":
+                driver = webdriver.Opera('.' + os.sep + 'webdriver' + os.sep + 'webdriver')
+            elif str is "5":
+                driver = webdriver.Ie('.' + os.sep + 'webdriver' + os.sep + 'webdriver')
+            elif str is "6":
+                driver = webdriver.Safari()
+            else:
+                sys.exit(0)
+            driver.get(
+                'https://accounts.pixiv.net/login?return_to=https%3A%2F%2Fwww.pixiv.net%2F&lang=zh&source=pc'
+                '&view_type=page')
+            break
+        except Exception as e:
+            print("出现异常")
+            flap = input("重新选择 Y 退出程序 N")
+            if flap is 'N' or flap is 'n':
+                sys.exit(0)
+
+
     print("请等待浏览器窗口的加载并登陆您的账号 程序记录您的Cookie数据 并不会记录账户和密码")
     while True:
         time.sleep(1)

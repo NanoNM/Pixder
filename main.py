@@ -1,6 +1,7 @@
 import shutil, threading
 import sys
 import time
+from functools import singledispatch
 
 import StaticDateInit
 from pageDownloader import *
@@ -34,6 +35,7 @@ threads = []
 safeStop = True
 gcdindex = False
 
+
 def initDate():
     global BaseData, NewTask, gcdindex, name, minlike, pagenum, thread, classify, mode, threads, safeStop
     BaseData = None
@@ -52,15 +54,22 @@ def initDate():
 def userInfoGe():
     print("您是第一次使用本程序? 请按照要求输入信息.")
     print("程序将使用您cookie来登录pixiv， 程序在运行时会获取你的cookie，关于cookie你可能想了解 https://baike.baidu.com/item/cookie/1119?fr=aladdin")
-    if input("同意使用Cookie Y 退出程序 N") == ('N' or 'n'):
-        sys.exit()
-    address = input("请输入代理地址 默认127.0.0.1") or '127.0.0.1'
-    port = input("请输入代理端口 默认7890") or '7890'
-    proxies = {
-        "http": "http://" + address + ":" + port,
-        "https": "http://" + address + ":" + port,
-    }
-    __connectTest(proxies)
+    flap = input("同意使用Cookie Y 退出程序 N")
+    if flap is 'N' or flap is 'n':
+        sys.exit(0)
+
+    # yuchuli
+    isNeedProxies = __preConnectTest()
+    if not isNeedProxies:
+        address = input("请输入代理地址 默认127.0.0.1") or '127.0.0.1'
+        port = input("请输入代理端口 默认7890") or '7890'
+        proxies = {
+            "http": "http://" + address + ":" + port,
+            "https": "http://" + address + ":" + port,
+        }
+        __connectTest(proxies)
+    else:
+        proxies = ""
     loginMod = input('你已经知道你的cookie了? y/n') or 'n'
     if loginMod == 'n' or loginMod == 'N':
         print("确定你所使用的浏览器对应webdriver")
@@ -77,7 +86,9 @@ def userInfoGe():
 
 
 def start(Name):
-    folderName = name.replace(':', '').replace('?', '').replace('\\', '').replace('/', '').replace('*', '').replace('|','').replace('<', '').replace('>', '')
+    folderName = name.replace(':', '').replace('?', '').replace('\\', '').replace('/', '').replace('*', '').replace('|',
+                                                                                                                    '').replace(
+        '<', '').replace('>', '')
     Index = True
     while Index:
         print("配置文件加载中 . . .")
@@ -99,12 +110,14 @@ def start(Name):
                     openThread = last['thread']
                     if int(openThread) < 2:
                         BaseData = StaticDateInit.init(config['Cookie'], Name, last['minlike'], last['MaxPage'],
-                                                       last['thread'], last['classify'], config['proxies'], config['user-agent'])
+                                                       last['thread'], last['classify'], config['proxies'],
+                                                       config['user-agent'])
                         realStart(last['nowPage'], last['MaxPage'])
                     else:
                         print("检测到需要开启多线程! 正在处理线程问题! 请稍等 ... ")
                         BaseData = StaticDateInit.init(config['Cookie'], Name, last['minlike'], last['MaxPage'],
-                                                       last['thread'], last['classify'], config['proxies'], config['user-agent'])
+                                                       last['thread'], last['classify'], config['proxies'],
+                                                       config['user-agent'])
                         thrIndex = 0
                         print("线程准备启动了! 请稍等 ... ")
                         while thrIndex < int(openThread):
@@ -125,10 +138,12 @@ def start(Name):
                             thrIndex += 1
                 else:
                     shutil.rmtree(parse.unquote(folderName) + '' + os.sep + 'lastTask')
-                    BaseData = StaticDateInit.init(config['Cookie'], Name, minlike, pagenum, thread, classify, config['proxies'],
+                    BaseData = StaticDateInit.init(config['Cookie'], Name, minlike, pagenum, thread, classify,
+                                                   config['proxies'],
                                                    config['user-agent'])
             else:
-                BaseData = StaticDateInit.init(config['Cookie'], Name, minlike, pagenum, thread, classify, config['proxies'],
+                BaseData = StaticDateInit.init(config['Cookie'], Name, minlike, pagenum, thread, classify,
+                                               config['proxies'],
                                                config['user-agent'])
 
             print("欢迎使用本程序!")
@@ -183,6 +198,7 @@ def realStart(Start='null', Stop='null', threadID=None, threadStart=0, threadSto
                 Downloader.picDownloader(BaseData, obj)
             Start += 1
 
+
 class work(threading.Thread):
     def __init__(self, threadID, name, page, stopPage):
         threading.Thread.__init__(self)
@@ -197,6 +213,7 @@ class work(threading.Thread):
         print("开始线程：" + self.name)
         realStart(self.page, self.stopPage, self.name, self.page, self.stopPage, self.safeStop)
         print("退出线程：" + self.name)
+
 
 # 未完成的方法 有问题 问题贼大 未完成项目的问题
 def panterStart(userID):
@@ -218,17 +235,20 @@ def panterStart(userID):
                         last = json.loads(last)
                     openThread = 1
                     if int(openThread) < 2:
-                        with open(userID + '' + os.sep + 'lastTask' + os.sep + 'main.log', 'r',encoding='utf-8') as file:
+                        with open(userID + '' + os.sep + 'lastTask' + os.sep + 'main.log', 'r',
+                                  encoding='utf-8') as file:
                             lastT = file.read()
                             lastT = json.loads(lastT)
                         BaseData = StaticDateInit.init(config['Cookie'], userID, last['minlike'], last['MaxPage'],
-                                                       last['thread'], last['classify'], config['proxies'],config['user-agent'])
+                                                       last['thread'], last['classify'], config['proxies'],
+                                                       config['user-agent'])
                         realStart(last['nowPage'], last['MaxPage'], None, None, None, lastT['this'])
                         return 0
                     else:
                         print("检测到需要开启多线程! 正在处理线程问题! 请稍等 ... ")
                         BaseData = StaticDateInit.init(config['Cookie'], userID, last['minlike'], last['MaxPage'],
-                                                       last['thread'], last['classify'], config['proxies'],config['user-agent'])
+                                                       last['thread'], last['classify'], config['proxies'],
+                                                       config['user-agent'])
                         thrIndex = 0
                         print("线程准备启动了! 请稍等 ... ")
                         while thrIndex < int(openThread):
@@ -249,14 +269,34 @@ def panterStart(userID):
                             return 0
                 else:
                     shutil.rmtree(userID + '' + os.sep + 'lastTask')
-                    BaseData = StaticDateInit.init(config['Cookie'], userID, minlike, pagenum, thread, classify,config['proxies'],
+                    BaseData = StaticDateInit.init(config['Cookie'], userID, minlike, pagenum, thread, classify,
+                                                   config['proxies'],
                                                    config['user-agent'])
             else:
-                BaseData = StaticDateInit.init(config['Cookie'], userID, minlike, pagenum, thread, classify,config['proxies'],
+                BaseData = StaticDateInit.init(config['Cookie'], userID, minlike, pagenum, thread, classify,
+                                               config['proxies'],
                                                config['user-agent'])
             print("欢迎使用本程序!")
         else:
             userInfoGe()
+
+
+def __preConnectTest():
+    print("PixSpider by Nanometer")
+    print(" PreConnectTest !!! ")
+    print("网络连通性检查中", end=' ...  ')
+    try:
+        html = requests.session().get("https://www.pixiv.net", headers={
+            'Referer': 'https://www.pixiv.net',
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36 Edg/90.0.818.56'},
+                                      verify=False, timeout=5)
+    except Exception as e:
+        print("网络检查失败了, 需要网络代理, 原因: ", end='')
+
+        print(e)
+        return False
+    print("网络连通性检查通过")
+    return True
 
 
 def __connectTest(proxies):
