@@ -16,32 +16,9 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 def seleLogin(init=None):
     while True:
-        str = input("\n"
-                    "\n"
-                    "\n"
-                    "\n"
-                    "\n"
-                    "\n"
-                    "\n"
-                    "\n"
-                    "\n"
-                    "\n"
-                    "\n"
-                    "\n"
-                    "\n"
-                    "\n"
-                    "\n"
-                    "\n"
-                    "\n"
-                    "\n"
-                    "\n"
-                    "\n"
-                    "\n"
-                    "\n"
-                    "\n"
-                    "\n"
-                    "\n"
-                    "\n"
+        account = input("输入您的账户：")
+        password = input("输入您的密码：")
+        str = input(
                     "警告！\n"
                     "模拟登陆行为是通过selenium webdriver来进行的\n"
                     "webdriver主流版本下载地址\n"
@@ -68,6 +45,7 @@ def seleLogin(init=None):
         #     pass
         # else:
         #     sys.exit(0)
+
         try:
             if str is "1":
                 driver = webdriver.Edge('.' + os.sep + 'webdriver' + os.sep + 'webdriver')
@@ -88,28 +66,27 @@ def seleLogin(init=None):
                 '&view_type=page')
             break
         except Exception as e:
+            print(e)
             print("出现异常")
             flap = input("重新选择 Y 退出程序 N")
             if flap is 'N' or flap is 'n':
                 sys.exit(0)
-
-
-    print("请等待浏览器窗口的加载并登陆您的账号 程序记录您的Cookie数据 并不会记录账户和密码")
+    LoginComponent = driver.find_element_by_id('LoginComponent')
+    inputFields = LoginComponent.find_elements_by_class_name('input-field')
+    inputFields[0].find_element_by_tag_name('input').send_keys(account)
+    inputFields[1].find_element_by_tag_name('input').send_keys(password)
+    LoginComponent.find_element_by_tag_name('button').click()
+    print("请等待浏览器窗口的加载 程序记录您的Cookie数据 并不会记录账户和密码")
     while True:
         time.sleep(1)
         if driver.current_url == 'https://www.pixiv.net/':
-            print("请随意点击一张图片")
-            while True:
-                if driver.current_url != 'https://www.pixiv.net/':
-                    driver.get('https://www.pixiv.net/ajax/search/tags/miku?lang=zh')
-                    cookiesStr = ''
-                    for cookie in driver.get_cookies():
-                        cookiesStr = cookiesStr + cookie['name'] + '=' + cookie['value'] + '; '
-                    print(driver.current_url)
-                    break
+            driver.get('https://www.pixiv.net/ajax/search/tags/miku?lang=zh')
+            cookiesStr = ''
+            for cookie in driver.get_cookies():
+                cookiesStr = cookiesStr + cookie['name'] + '=' + cookie['value'] + '; '
+            driver.close()
             break
     return cookiesStr
-    # return None
 
 
 # 废弃的
