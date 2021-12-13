@@ -15,11 +15,8 @@ requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 请勿将本程序用于商业用途！
 请勿将本程序用于商业用途！
 请勿将本程序用于商业用途！
-
 出事我不负责 一点责任都没有 网警来找你 那是你的事 这个别找我
-
 我写的代码 我自己都不赚钱 也不是给你用来赚钱的!!! 
-
 '''
 
 BaseData = None
@@ -55,7 +52,7 @@ def userInfoGe():
     print("您是第一次使用本程序? 请按照要求输入信息.")
     print("程序将使用您cookie来登录pixiv， 程序在运行时会获取你的cookie，关于cookie你可能想了解 https://baike.baidu.com/item/cookie/1119?fr=aladdin")
     flap = input("同意使用Cookie Y 退出程序 N")
-    if flap is 'N' or flap is 'n':
+    if flap == 'N' or flap == 'n':
         sys.exit(0)
 
     # yuchuli
@@ -413,9 +410,9 @@ if __name__ == '__main__':
                         '任务完成了: ' + str(((int(BaseData.pagenum) - unfinishedall) / int(BaseData.pagenum)) * 100) + '%')
             elif cmd == 'about':
                 print('===========================\n'
-                      'Pixder V0.3.13 by Nanometer\n'
-                      '我喜欢高中同学啊 可恶\n'
-                      '想和女孩子贴贴 !!!\n'
+                      'Pixder V0.3.14 by Nanometer\n'
+                      '噫 好 我中了！！\n'
+                      '我中了PS5兄弟们\n'
                       '===========================\n')
             else:
                 print('没有一个名为' + cmd + '的命令')

@@ -63,8 +63,8 @@ class FileAnalysis:
             pass
         else:
             os.makedirs(parse.unquote(init.folderName) + '' + os.sep + 'lastTask')
-        with open('.' + os.sep + parse.unquote(init.folderName) + os.sep + 'lastTask' + os.sep + threadInfo[
-            'threadID'] + '.log', 'w',
+        with open('.' + os.sep + parse.unquote(init.folderName) + os.sep + 'lastTask' + os.sep + str(threadInfo[
+            'threadID']) + '.log', 'w',
                   encoding='utf-8') as file:
             file.write(json.dumps(threadInfo, ensure_ascii=False))
 

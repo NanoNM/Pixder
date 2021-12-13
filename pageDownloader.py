@@ -37,14 +37,15 @@ def ImgDownloader(init, date, url, part, index, R='' + os.sep + '' + os.sep + ''
         else:
             os.makedirs(parse.unquote(init.name) + R + '' + os.sep + 'gif')
         if url.find('img-zip-ugoira') != -1:
-            targeImg = '.' + os.sep + parse.unquote(init.name) + R + os.sep + 'gif' + os.sep + date['illustId'] + ' ' + date['userId'] + '.' + sty
+            targeImg = '.' + os.sep + parse.unquote(init.name) + R + os.sep + 'gif' + os.sep + date['illustId'] + date['userId'] + '.' + sty
         else:
-            targeImg = '.' + os.sep + parse.unquote(init.name) + R + os.sep + date['illustId']+ ' ' + date['userId'] + part +'.' + sty
+            targeImg = '.' + os.sep + parse.unquote(init.name) + R + os.sep + date['illustId'] + date['userId'] + part +'.' + sty
         if os.path.exists(targeImg):
             print('图片 ' + url + ' 存在,跳过了!')
             return 0
         with open(targeImg, mode='wb') as pic:
             pic.write(PIC.content)
+
         """unzip zip file"""
         if url.find('img-zip-ugoira') != -1:
             # print('动图组 ' + url + ' 解压中')
@@ -159,12 +160,16 @@ class Downloader:
                 print('即将下载: ' + url)
                 picDoDownloader(init, date, url, part, index)
             if date['original'].find('ugoira0') != -1:
+                gifUrl = 'https://www.pixiv.net/ajax/illust/' + date['illustId'] + '/ugoira_meta?lang=zh'
+                gifUrlJsonStr = init.se.get(gifUrl, proxies=init.proxies, headers=init.headers).text
+                gifUrlJson = json.loads(gifUrlJsonStr)
                 # str(date['width'])
                 # str(date['height'])
+                url = gifUrlJson['body']['originalSrc']
                 part = 'ugoira' + '1920' + 'x' + '1080' + '.zip'
-                url = date['original'].replace('img-original', 'img-zip-ugoira')
-                url = url.replace('ugoira0.jpg', part)
-                # print('即将下载动图文件包 1920 x 1080: ' + url)
+                # url = date['original'].replace('img-original', 'img-zip-ugoira')
+                # url = url.replace('ugoira0.jpg', part)
+                print('即将下载动图文件包 1920 x 1080: ' + url)
                 picDoDownloader(init, date, url, part, index)
                 index += 1
     @staticmethod
