@@ -105,9 +105,12 @@
 
    1.webdriver多元化，现在支持目前主流的浏览 edge chrome ie 
    firefox 欧朋 safari
+   
    2.对safari不能交互的问题做了自动化，理论上支持其他浏览器
    
    3.新的代码有macos提交 暂不知是否与windows冲突
+   
+   4.移除了HIM
    
    ###最新版本中已知未修复问题:
    
