@@ -32,9 +32,12 @@ threads = []
 safeStop = True
 gcdindex = False
 
+# 进程完成指示 用来指示任务全部完成
+allDone = False
+
 
 def initDate():
-    global BaseData, NewTask, gcdindex, name, minlike, pagenum, thread, classify, mode, threads, safeStop
+    global BaseData, NewTask, gcdindex, name, minlike, pagenum, thread, classify, mode, threads, safeStop, allDone
     BaseData = None
     NewTask = True
     gcdindex = False
@@ -46,6 +49,7 @@ def initDate():
     mode = ''
     threads = []
     safeStop = True
+    allDone = False
 
 
 def userInfoGe():
@@ -210,6 +214,14 @@ class work(threading.Thread):
         print("开始线程：" + self.name)
         realStart(self.page, self.stopPage, self.name, self.page, self.stopPage, self.safeStop)
         print("退出线程：" + self.name)
+        i = 0
+        for thr in threads:
+            if thr.is_alive():
+                i += 1
+        if i == 1:
+            global allDone
+            allDone = True
+            print("任务结束 输入r进行新一轮的任务或者使用q来结束程序")
 
 
 # 未完成的方法 有问题 问题贼大 未完成项目的问题
@@ -316,6 +328,10 @@ def __connectTest(proxies):
     print("网络连通性检查通过")
 
 
+def __destructor():
+    pass
+
+
 if __name__ == '__main__':
     # 执行初始化操作
     if not os.path.exists('.' + os.sep + 'userInfo.json'):
@@ -325,6 +341,7 @@ if __name__ == '__main__':
         config = json.loads(content)
     __connectTest(config['proxies'])
     while True:
+        initDate()
         #
         mode = input('模式选择 \n1. 标签遍历模式(默认) 2. 画师模式\n') or '1'
         if mode == '1':
@@ -387,15 +404,18 @@ if __name__ == '__main__':
             cmd = input()
             if cmd == "status":
                 for thr in threads:
-                    status = 'Stoped'
+                    status = 'Stopped'
                     if thr.is_alive():
                         status = 'Alive'
                     else:
-                        status = 'Stoped'
+                        status = 'Stopped'
                     print('线程' + thr.name + '的状态是: ' + status)
             elif cmd == "stops":
                 safeStop = False
-                print("请等待所有线程退出后即可安全 退出")
+                print("请等待所有线程退出后即可安全退出")
+
+            elif cmd == "r":
+                break
             elif cmd == "msn":
                 unfinishedall = 0
                 index = False
@@ -410,9 +430,16 @@ if __name__ == '__main__':
                         '任务完成了: ' + str(((int(BaseData.pagenum) - unfinishedall) / int(BaseData.pagenum)) * 100) + '%')
             elif cmd == 'about':
                 print('===========================\n'
-                      'Pixder V0.3.14 by Nanometer\n'
-                      '噫 好 我中了！！\n'
-                      '我中了PS5兄弟们\n'
+                      'Pixder V0.5.0 by Nanometer\n'
+                      '我喜欢的妹妹真的不喜欢我阿\n'
+                      '我到底该怎么办！\n'
+                      '我真的好爱她，哎去找个班上吧。\n'
+                      '血源诅咒真好玩！！！！'
                       '===========================\n')
+            elif cmd == 'q':
+                if allDone:
+                    sys.exit(1)
+                else:
+                    print("当前退出是不安全程序不允许 请先使用stops指令")
             else:
                 print('没有一个名为' + cmd + '的命令')
