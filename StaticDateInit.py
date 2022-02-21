@@ -13,6 +13,15 @@ class StaticDateInit(object):
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
+    """
+        'https://www.pixiv.net/ranking.php?format=json&p='
+        'https://www.pixiv.net/ranking.php?mode=weekly&p=2&format=json
+        
+        'https://www.pixiv.net/ranking.php?mode=daily_r18&format=json&p='
+        'https://www.pixiv.net/ranking.php?mode=weekly_r18&p=2&format=json'
+        '
+    """
+
     def __init__(self, Cookie, name, minlike, pagenum, thread, classify, proxies,UserID='null' ,userAgent=None):
         self.baseUrl = 'https://accounts.pixiv.net/login?lang=zh&source=pc&view_type=page&ref=wwwtop_accounts_index'
         self.loginUrl = 'https://accounts.pixiv.net/api/login?lang=zh'

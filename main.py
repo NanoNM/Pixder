@@ -351,7 +351,13 @@ if __name__ == '__main__':
             pagenum = input('最大爬取页面 默认100: ') or '100'
             thread = input('启用线程数 注意 线程数一定要被最大爬取页面整除并且不能等于最大页面数!!!! 1除外 默认20: ') or '20'
             classify = '1'
-            classify = input('分级模式选择 1: 大众级 2: 限制级+大众级(默认) 3: 限制级') or '2'
+            classify = input('分级模式选择  '
+                             '\n1: 大众级 '
+                             '\n2: R18+大众级(默认) '
+                             '\n3: R18 '
+                             '\n4: R18+R18G+大众级(全部)'
+                             '\n5: R18G'
+                             '\n请输入：') or '2'
             start(parse.unquote(name))
             # 模拟登陆 需要人机验证 我不会
             # doLogin(BaseData)
@@ -431,9 +437,6 @@ if __name__ == '__main__':
             elif cmd == 'about':
                 print('===========================\n'
                       'Pixder V0.5.0 by Nanometer\n'
-                      '我喜欢的妹妹真的不喜欢我阿\n'
-                      '我到底该怎么办！\n'
-                      '我真的好爱她，哎去找个班上吧。\n'
                       '血源诅咒真好玩！！！！\n'
                       '===========================\n')
             elif cmd == 'q':

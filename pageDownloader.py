@@ -5,16 +5,20 @@ from Util import *
 from urllib import parse
 
 
+# 分级管理
 def picDoDownloader(init, date, url, part, index):
     if int(init.classify) == 1:
         for tag in date['tags']:
-            if 'R-18' == tag['tag']:
-                print('分级制度拦截')
+            if 'R-18' == tag['tag'] or 'R-18G' == tag['tag']:
+                print('分级制度拦截 R-18/R-18G')
                 return
         ImgDownloader(init, date, url, part, index)
     elif int(init.classify) == 2:
         index = False
         for tag in date['tags']:
+            if 'R-18G' == tag['tag']:
+                print('分级制度拦截 R-18G')
+                return
             if 'R-18' == tag['tag']:
                 index = True
         if index:
@@ -23,8 +27,33 @@ def picDoDownloader(init, date, url, part, index):
             ImgDownloader(init, date, url, part, index)
     elif int(init.classify) == 3:
         for tag in date['tags']:
+            if 'R-18G' == tag['tag']:
+                print('分级制度拦截 R-18G')
+                return
             if 'R-18' == tag['tag']:
                 ImgDownloader(init, date, url, part, index)
+    elif int(init.classify) == 4:
+        index = 0
+        for tag in date['tags']:
+            if 'R-18' == tag['tag']:
+                index = 2
+            if 'R-18G' == tag['tag']:
+                index = 1
+                break
+
+        if index == 2:
+            ImgDownloader(init, date, url, part, index, '' + os.sep + '' + os.sep + 'R-18')
+        elif index == 1:
+            ImgDownloader(init, date, url, part, index, '' + os.sep + '' + os.sep + 'R-18G')
+        else:
+            ImgDownloader(init, date, url, part, index)
+    elif int(init.classify) == 5:
+        for tag in date['tags']:
+            if 'R-18G' == tag['tag']:
+                ImgDownloader(init, date, url, part, index,'' + os.sep + '' + os.sep + 'R-18G')
+            if 'R-18' == tag['tag']:
+                ImgDownloader(init, date, url, part, index,'' + os.sep + '' + os.sep + 'R-18')
+
 
 
 def ImgDownloader(init, date, url, part, index, R='' + os.sep + '' + os.sep + ''):

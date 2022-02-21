@@ -46,17 +46,17 @@ def seleLogin(init=None):
         #     sys.exit(0)
 
         try:
-            if str is "1":
+            if str == "1":
                 driver = webdriver.Edge('.' + os.sep + 'webdriver' + os.sep + 'webdriver')
-            elif str is "2":
+            elif str == "2":
                 driver = webdriver.Chrome('.' + os.sep + 'webdriver' + os.sep + 'webdriver')
-            elif str is "3":
+            elif str == "3":
                 driver = webdriver.Firefox('.' + os.sep + 'webdriver' + os.sep + 'webdriver')
-            elif str is "4":
+            elif str == "4":
                 driver = webdriver.Opera('.' + os.sep + 'webdriver' + os.sep + 'webdriver')
-            elif str is "5":
+            elif str == "5":
                 driver = webdriver.Ie('.' + os.sep + 'webdriver' + os.sep + 'webdriver')
-            elif str is "6":
+            elif str == "6":
                 driver = webdriver.Safari()
             else:
                 sys.exit(0)
@@ -68,14 +68,15 @@ def seleLogin(init=None):
             print(e)
             print("出现异常")
             flap = input("重新选择 Y 退出程序 N")
-            if flap is 'N' or flap is 'n':
+            if flap == 'N' or flap == 'n':
                 sys.exit(0)
-    LoginComponent = driver.find_element_by_id('LoginComponent')
-    inputFields = LoginComponent.find_elements_by_class_name('input-field')
+    loginComponent = driver.find_element_by_id('LoginComponent')
+    inputFields = loginComponent.find_elements_by_class_name('input-field')
     inputFields[0].find_element_by_tag_name('input').send_keys(account)
     inputFields[1].find_element_by_tag_name('input').send_keys(password)
-    LoginComponent.find_element_by_tag_name('button').click()
+    loginComponent.find_element_by_tag_name('button').click()
     print("请等待浏览器窗口的加载 程序记录您的Cookie数据 并不会记录账户和密码")
+    print("如果显示密码错误请关闭程序重新运行")
     while True:
         time.sleep(1)
         if driver.current_url == 'https://www.pixiv.net/':
