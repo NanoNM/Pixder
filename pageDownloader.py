@@ -47,6 +47,7 @@ def picDoDownloader(init, date, url, part, index):
             ImgDownloader(init, date, url, part, index, '' + os.sep + '' + os.sep + 'R-18G')
         else:
             ImgDownloader(init, date, url, part, index)
+
     elif int(init.classify) == 5:
         for tag in date['tags']:
             if 'R-18G' == tag['tag']:
@@ -66,9 +67,9 @@ def ImgDownloader(init, date, url, part, index, R='' + os.sep + '' + os.sep + ''
         else:
             os.makedirs(parse.unquote(init.name) + R + '' + os.sep + 'gif')
         if url.find('img-zip-ugoira') != -1:
-            targeImg = '.' + os.sep + parse.unquote(init.name) + R + os.sep + 'gif' + os.sep + date['illustId'] + date['userId'] + '.' + sty
+            targeImg = '.' + os.sep + parse.unquote(init.name) + R + os.sep + 'gif' + os.sep + date['illustId']+ ' ' + date['userId'] + '.' + sty
         else:
-            targeImg = '.' + os.sep + parse.unquote(init.name) + R + os.sep + date['illustId'] + date['userId'] + part +'.' + sty
+            targeImg = '.' + os.sep + parse.unquote(init.name) + R + os.sep + date['illustId']+ ' ' + date['userId'] + part +'.' + sty
         if os.path.exists(targeImg):
             print('图片 ' + url + ' 存在,跳过了!')
             return 0
