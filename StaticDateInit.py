@@ -23,11 +23,17 @@ class StaticDateInit(object):
     """
 
     def __init__(self, Cookie, name, minlike, pagenum, thread, classify, proxies, UserID='null', userAgent=None):
+        # 基础地址
         self.baseUrl = 'https://accounts.pixiv.net/login?lang=zh&source=pc&view_type=page&ref=wwwtop_accounts_index'
+        # 登陆地址
         self.loginUrl = 'https://accounts.pixiv.net/api/login?lang=zh'
+        # 主站地址
         self.mainUrl = 'http://www.pixiv.net'
+        # 用户账户
         self.pixivId = ''
+        # 用户密码
         self.password = ''
+        # Pixiv登录验证Key
         self.postKey = []
         self.returnTo = 'http://www.pixiv.net/'
         self.loadPath = ''
@@ -62,7 +68,8 @@ def init(Cookie, name, minlike, pagenum, thread, classify, proxies, userAgent):
     # ua = Faker()
     # 过低的UA会导致爬取失败!!!!
     # fakeUa = ua.user_agent()
-    fakeUa = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.75 Safari/537.36'
+    fakeUa = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.75 ' \
+             'Safari/537.36 '
 
     # print('当前UA: ' + fakeUa)
     return StaticDateInit(Cookie, name, minlike, pagenum, thread, classify, proxies, None, fakeUa)

@@ -85,11 +85,13 @@ def seleLogin(init=None):
             if flap == 'N' or flap == 'n':
                 sys.exit(0)
     driver.find_element(by=By.XPATH,
-                        value='/html/body/div[2]/div/div[3]/div[1]/form/fieldset[1]/label/input').send_keys(account)
+                        value='/html/body/div[2]/div/div[3]/div[1]/div[2]/div/div/div/form/fieldset[1]/label/input').send_keys(account)
+
     driver.find_element(by=By.XPATH,
-                        value='/html/body/div[2]/div/div[3]/div[1]/form/fieldset[2]/label/input').send_keys(password)
+                        value='/html/body/div[2]/div/div[3]/div[1]/div[2]/div/div/div/form/fieldset[2]/label/input').send_keys(password)
     driver.find_element(by=By.XPATH,
-                        value='/html/body/div[2]/div/div[3]/div[1]/form/button').click()
+                        value='/html/body/div[2]/div/div[3]/div[1]/div[2]/div/div/div/form/button').click()
+
     print("请等待浏览器窗口的加载 程序记录您的Cookie数据 并不会记录账户和密码")
     print("如果显示密码错误请关闭程序重新运行")
     while True:

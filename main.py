@@ -339,7 +339,10 @@ if __name__ == '__main__':
     with open('.' + os.sep + 'userInfo.json', 'r', encoding='utf-8') as file:
         content = file.read()
         config = json.loads(content)
-    __connectTest(config['proxies'])
+        proxies = None
+        if config['proxies']!='':
+            proxies = config['proxies']
+    __connectTest(proxies)
     while True:
         initDate()
         #
@@ -350,7 +353,6 @@ if __name__ == '__main__':
             minlike = input('最小点赞数量 默认2000: ') or '2000'
             pagenum = input('最大爬取页面 默认100: ') or '100'
             thread = input('启用线程数 注意 线程数一定要被最大爬取页面整除并且不能等于最大页面数!!!! 1除外 默认20: ') or '20'
-            classify = '1'
             classify = input('分级模式选择  '
                              '\n1: 大众级 '
                              '\n2: R18+大众级(默认) '
