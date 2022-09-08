@@ -1,4 +1,5 @@
 import os
+import sys
 import zipfile
 import imageio
 from Util import *
@@ -51,25 +52,26 @@ def picDoDownloader(init, date, url, part, index):
     elif int(init.classify) == 5:
         for tag in date['tags']:
             if 'R-18G' == tag['tag']:
-                ImgDownloader(init, date, url, part, index,'' + os.sep + '' + os.sep + 'R-18G')
+                ImgDownloader(init, date, url, part, index, '' + os.sep + '' + os.sep + 'R-18G')
             if 'R-18' == tag['tag']:
-                ImgDownloader(init, date, url, part, index,'' + os.sep + '' + os.sep + 'R-18')
-
+                ImgDownloader(init, date, url, part, index, '' + os.sep + '' + os.sep + 'R-18')
 
 
 def ImgDownloader(init, date, url, part, index, R='' + os.sep + '' + os.sep + ''):
     global targeImg
     try:
         sty = url.split(".")[-1]
-        PIC = init.se.get(url,proxies=init.proxies, headers=init.headers)
+        PIC = init.se.get(url, proxies=init.proxies, headers=init.headers)
         if os.path.exists(parse.unquote(init.name) + R + '' + os.sep + 'gif'):
             pass
         else:
             os.makedirs(parse.unquote(init.name) + R + '' + os.sep + 'gif')
         if url.find('img-zip-ugoira') != -1:
-            targeImg = '.' + os.sep + parse.unquote(init.name) + R + os.sep + 'gif' + os.sep + date['illustId']+ ' ' + date['userId'] + '.' + sty
+            targeImg = '.' + os.sep + parse.unquote(init.name) + R + os.sep + 'gif' + os.sep + date['illustId'] + ' ' + \
+                       date['userId'] + '.' + sty
         else:
-            targeImg = '.' + os.sep + parse.unquote(init.name) + R + os.sep + date['illustId']+ ' ' + date['userId'] + part +'.' + sty
+            targeImg = '.' + os.sep + parse.unquote(init.name) + R + os.sep + date['illustId'] + ' ' + date[
+                'userId'] + part + '.' + sty
         if os.path.exists(targeImg):
             print('图片 ' + url + ' 存在,跳过了!')
             return 0
@@ -107,7 +109,7 @@ def ImgDownloader(init, date, url, part, index, R='' + os.sep + '' + os.sep + ''
     except Exception as e:
         print('下载/解压 ' + url + '失败了!', end='')
         print(e)
-        PIC = init.se.get(url,proxies=init.proxies, headers=init.headers)
+        PIC = init.se.get(url, proxies=init.proxies, headers=init.headers)
         if os.path.exists(parse.unquote(init.name) + R):
             pass
         else:
@@ -146,6 +148,10 @@ class Downloader:
                     signPixivEntrys.append(item)
                 print('分析链接: ' + Url + '结束了!')
                 return signPixivEntrys
+            except TypeError as te:
+                print('错误: ' + str(te) + '\n可能是登录失效了,请删除同级目录下的userinfo.json后重新登录')
+                print('分析链接: ' + Url + '失败了!!')
+                sys.exit(0)
             except Exception as e:
                 print(e)
                 print('分析链接: ' + Url + '失败了!! 准备重试')
@@ -202,6 +208,7 @@ class Downloader:
                 print('即将下载动图文件包 1920 x 1080: ' + url)
                 picDoDownloader(init, date, url, part, index)
                 index += 1
+
     @staticmethod
     def penterDownloader(init, date):
         pass

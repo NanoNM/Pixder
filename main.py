@@ -438,8 +438,8 @@ if __name__ == '__main__':
                         '任务完成了: ' + str(((int(BaseData.pagenum) - unfinishedall) / int(BaseData.pagenum)) * 100) + '%')
             elif cmd == 'about':
                 print('===========================\n'
-                      'Pixder V0.5.0 by Nanometer\n'
-                      '血源诅咒真好玩！！！！\n'
+                      'Pixder V0.5.6 by Nanometer\n'
+                      '被妹妹拒绝了！！！！\n'
                       '===========================\n')
             elif cmd == 'q':
                 if allDone:
