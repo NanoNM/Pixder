@@ -1,7 +1,5 @@
 import shutil, threading
-import sys
 import time
-from functools import singledispatch
 
 import StaticDateInit
 from pageDownloader import *
@@ -236,7 +234,7 @@ def panterStart(userID):
                 content = file.read()
                 config = json.loads(content)
             if os.path.exists(userID + '' + os.sep + 'lastTask' + os.sep + 'main.log'):
-                x = input('检测到上次的未完成任务 是否继续未完成的任务(Y/N)') or 'y'
+                x = input('检测到上次的未完成任务 是否继续未完成的任务(Y/N)') or 'N'
                 if x == 'Y' or x == 'y':
                     NewTask = False
                     with open(userID + '' + os.sep + 'lastTask' + os.sep + 'main.log', 'r', encoding='utf-8') as file:

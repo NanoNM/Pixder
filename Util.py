@@ -1,5 +1,6 @@
 import json
 import os
+import time
 from urllib import parse
 
 
@@ -8,12 +9,22 @@ class FileAnalysis:
         i = 1
         for obj in date:
             i += 1
-            jsonDate = self.work(obj['illustId'], init)
+            # 避免风控加的延迟
+            time.sleep(1)
+            id = obj['illustId']
+            while True:
+                print('解析ID: '+id)
+                jsonDate = self.work(obj['illustId'], init)
+                if not jsonDate['error']:
+                    break
+                print('解析错误 可能被风控: ' + id)
+                time.sleep(3)
             obj['illustTitle'] = jsonDate['body']['illustTitle']
             obj['tags'] = jsonDate['body']['tags']['tags']
             obj['original'] = jsonDate['body']['urls']['original']
             obj['likeCon'] = jsonDate['body']['bookmarkCount']
             obj['pageCount'] = jsonDate['body']['pageCount']
+            print('解析完成: ' + id)
 
     # def panterAnalysis(self, date, init):
     #     i = 1
