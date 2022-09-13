@@ -3,6 +3,8 @@ import os
 import time
 from urllib import parse
 
+import requests
+
 
 class FileAnalysis:
     def fileAnalysis(self, date, init):
@@ -10,10 +12,9 @@ class FileAnalysis:
         for obj in date:
             i += 1
             # 避免风控加的延迟
-            time.sleep(1)
             id = obj['illustId']
             while True:
-                print('解析ID: '+id)
+                # print('解析ID: '+id)
                 jsonDate = self.work(obj['illustId'], init)
                 if not jsonDate['error']:
                     break
@@ -24,7 +25,7 @@ class FileAnalysis:
             obj['original'] = jsonDate['body']['urls']['original']
             obj['likeCon'] = jsonDate['body']['bookmarkCount']
             obj['pageCount'] = jsonDate['body']['pageCount']
-            print('解析完成: ' + id)
+            # print('解析完成: ' + id)
 
     # def panterAnalysis(self, date, init):
     #     i = 1
@@ -41,8 +42,10 @@ class FileAnalysis:
         url = init.signUrl.replace("PixId", ID)
         while True:
             try:
-                html = init.se.get(url, proxies=init.proxies, headers=init.headers).text
-                jsonDate = json.loads(html)
+                response = requests.request("GET", url ,proxies=init.proxies).text
+                # print(response.text)
+                # html = init.se.get(url, proxies=init.proxies, headers=init.headers).text
+                jsonDate = json.loads(response)
                 return jsonDate
             except Exception as e:
                 print('获取' + url + '失败了错误原因: ')
