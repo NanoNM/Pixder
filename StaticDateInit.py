@@ -29,6 +29,10 @@ class StaticDateInit(object):
         self.loginUrl = 'https://accounts.pixiv.net/api/login?lang=zh'
         # 主站地址
         self.mainUrl = 'http://www.pixiv.net'
+        # 热榜地址
+        self.rankUrl = 'https://www.pixiv.net/ranking.php?format=json'
+        # 热榜带种类地址
+        self.rankContentUrl = 'https://www.pixiv.net/ranking.php?format=json&content='
         # 用户账户
         self.pixivId = ''
         # 用户密码

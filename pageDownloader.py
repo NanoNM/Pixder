@@ -67,11 +67,11 @@ def ImgDownloader(init, date, url, part, index, R='' + os.sep + '' + os.sep + ''
         else:
             os.makedirs(parse.unquote(init.name) + R + '' + os.sep + 'gif')
         if url.find('img-zip-ugoira') != -1:
-            targeImg = '.' + os.sep + parse.unquote(init.name) + R + os.sep + 'gif' + os.sep + date['illustId'] + ' ' + \
-                       date['userId'] + '.' + sty
+            targeImg = '.' + os.sep + parse.unquote(init.name) + R + os.sep + 'gif' + os.sep + str(date['illustId']) + ' ' + \
+                       str(date['userId']) + '.' + sty
         else:
-            targeImg = '.' + os.sep + parse.unquote(init.name) + R + os.sep + date['illustId'] + ' ' + date[
-                'userId'] + part + '.' + sty
+            targeImg = '.' + os.sep + parse.unquote(init.name) + R + os.sep + str(date['illustId']) + ' ' + str(date[
+                'userId']) + part + '.' + sty
         if os.path.exists(targeImg):
             print('图片 ' + url + ' 存在,跳过了!')
             return 0
@@ -158,6 +158,77 @@ class Downloader:
                 pass
 
     @staticmethod
+    def rankJsonLoadAnalysis(init, threadID, modeType, content, primaryClassify, page):
+        contentStr = None
+        signPixivEntrys = []
+        if content == '2':
+            contentStr = 'illust'
+        elif content == '3':
+            contentStr = 'ugoira'
+        elif content == '4':
+            contentStr = 'manga'
+
+
+        modeTypeStr = None
+        if primaryClassify == '1':
+            if modeType == '1':
+                modeTypeStr = 'daily'
+            elif modeType == '2':
+                modeTypeStr = 'weekly'
+            elif modeType == '3':
+                modeTypeStr = 'monthly'
+            elif modeType == '4':
+                modeTypeStr = 'rookie'
+            elif modeType == '5':
+                modeTypeStr = 'original'
+            elif modeType == '6':
+                modeTypeStr = 'male'
+            elif modeType == '7':
+                modeTypeStr = 'female'
+        elif primaryClassify == '3':
+            if modeType == '1':
+                modeTypeStr = 'daily_r18'
+            elif modeType == '2':
+                modeTypeStr = 'weekly_r18'
+            # elif modeType == '3':
+            #     modeTypeStr = 'monthly_r18'
+            # elif modeType == '4':
+            #     modeTypeStr = 'rookie_r18'
+            # elif modeType == '5':
+            #     modeTypeStr = 'original_r18'
+            elif modeType == '6':
+                modeTypeStr = 'male_r18'
+            elif modeType == '7':
+                modeTypeStr = 'female_r18'
+        elif primaryClassify == '4':
+            modeTypeStr = 'r18g'
+
+        #
+        if content == '1':
+            url = init.rankUrl + '&mode=' + modeTypeStr + '&p=' + str(page)
+        else:
+            url = init.rankContentUrl + contentStr + '&mode=' + modeTypeStr + '&p=' + str(page)
+        html = init.se.get(url, proxies=init.proxies, headers=init.headers, verify=False, ).text
+        htmlJson = json.loads(html)
+        try:
+            for datas in htmlJson['contents']:
+                item = {
+                    'illustId': datas['illust_id'],
+                    'illustTitle': datas['title'],
+                    'tags': datas['tags'],
+                    'pageCount': datas['illust_page_count'],
+                    # 'isAdContainer': dates['isAdContainer'],
+                    'userId': datas['user_id'],
+                    'userName': datas['user_name'],
+                    'width': datas['width'],
+                    'height': datas['height']
+                }
+                signPixivEntrys.append(item)
+            return signPixivEntrys
+        except KeyError as e:
+            return []
+
+    @staticmethod
     def penterJsonLoadAnalysis(init):
         Url = init.userPage.replace('USERID', init.name)
         print('分析链接: ' + Url)
@@ -183,6 +254,9 @@ class Downloader:
                 pass
 
     @staticmethod
+    def rankPicDownloader(init, date):
+        pass
+    @staticmethod
     def picDownloader(init, date):
         judge = Judge()
         if judge.checkLikeNum(init.minlike, date['likeCon']):
@@ -196,7 +270,7 @@ class Downloader:
                 print('即将下载: ' + url)
                 picDoDownloader(init, date, url, part, index)
             if date['original'].find('ugoira0') != -1:
-                gifUrl = 'https://www.pixiv.net/ajax/illust/' + date['illustId'] + '/ugoira_meta?lang=zh'
+                gifUrl = 'https://www.pixiv.net/ajax/illust/' + str(date['illustId']) + '/ugoira_meta?lang=zh'
                 gifUrlJsonStr = init.se.get(gifUrl, proxies=init.proxies, headers=init.headers).text
                 gifUrlJson = json.loads(gifUrlJsonStr)
                 # str(date['width'])

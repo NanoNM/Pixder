@@ -1,5 +1,6 @@
 import shutil, threading
 import time
+import datetime
 
 import StaticDateInit
 from pageDownloader import *
@@ -230,6 +231,33 @@ class work(threading.Thread):
             print("任务结束 输入r进行新一轮的任务或者使用q来结束程序")
 
 
+class RankWork(threading.Thread):
+    def __init__(self, threadID, page, stopPage, modeType, content, primaryClassify):
+        threading.Thread.__init__(self)
+        self.primaryClassify = primaryClassify
+        self.modeType = modeType
+        self.content = content
+        self.safeStop = True
+        self.threadID = threadID
+        self.name = name
+        self.page = page
+        self.unfinished = None
+        self.stopPage = stopPage
+
+    def run(self):
+        print("开始线程：" + self.threadID)
+        rankStart(self.threadID, self.modeType, self.content, self.primaryClassify, self.page, self.stopPage)
+        print("退出线程：" + self.threadID)
+        i = 0
+        for thr in threads:
+            if thr.is_alive():
+                i += 1
+        if i == 1:
+            global allDone
+            allDone = True
+            print("任务结束 输入r进行新一轮的任务或者使用q来结束程序")
+
+
 # 未完成的方法 有问题 问题贼大 未完成项目的问题
 def panterStart(userID):
     Index = True
@@ -296,6 +324,46 @@ def panterStart(userID):
             userInfoGe()
 
 
+def rankStart(thid, modeType, content, primaryClassify, page, stopPage):
+    Index = True
+    indexTime = ''
+    if modeType == '1':
+        indexTime = 'today ' + str(datetime.date.today())
+    if modeType == '2':
+        indexTime = 'week ' + str(datetime.date.today())
+    if modeType == '3':
+        indexTime = 'month ' + str(datetime.date.month)
+    if modeType == '4':
+        indexTime = 'rookie ' + str(datetime.date.today())
+    if modeType == '5':
+        indexTime = 'original ' + str(datetime.date.today())
+    if modeType == '6':
+        indexTime = 'male ' + str(datetime.date.today())
+    if modeType == '7':
+        indexTime = 'female ' + str(datetime.date.today())
+    if modeType == '8':
+        indexTime = 'r18g ' + str(datetime.date.today())
+
+    while Index:
+        if os.path.exists('.' + os.sep + 'userInfo.json'):
+            global BaseData, NewTask
+            Index = False
+            BaseData = StaticDateInit.init(BaseConfig['Cookie'], indexTime, -1, 10, 5, 4,
+                                           BaseConfig['proxies'],
+                                           BaseConfig['user-agent'])
+            pageDownloader = Downloader()
+            while page < stopPage:
+                datas = pageDownloader.rankJsonLoadAnalysis(BaseData, thid, modeType, content, primaryClassify, page)
+                # 细致分析
+                fileAnalysis = FileAnalysis()
+                fileAnalysis.fileAnalysis(datas, BaseData)
+                for obj in datas:
+                    Downloader.picDownloader(BaseData, obj)
+                page = page+1
+        else:
+            userInfoGe()
+
+
 def __preConnectTest():
     print("PixSpider by Nanometer")
     print(" PreConnectTest !!! ")
@@ -357,7 +425,7 @@ if __name__ == '__main__':
     while True:
         initDate()
         #
-        mode = input('模式选择 \n1. 标签遍历模式(默认) 2. 画师模式\n') or '1'
+        mode = input('模式选择 \n1. 标签遍历模式(默认) 2. 画师模式 3. 热榜模式\n') or '1'
         if mode == '1':
             print('当前模式:标签遍历模式(如果是想继续上次任务只需要输入名字其他全部空白)')
             name = input('输入爬取插图的名字: ')
@@ -397,25 +465,71 @@ if __name__ == '__main__':
             classify = input('分级模式选择 1: 大众级 2: 限制级+大众级(默认) 3: 限制级') or '2'
             ints = panterStart(userID)
             realStart()
-            # if ints == 0:
-            #     pass
-            # else:
-            #     if int(BaseData.thread) > 1 and NewTask:
-            #         print("检测到需要开启多线程! 正在处理线程问题! 请稍等 ... ")
-            #         evPage = int(BaseData.pagenum) // int(BaseData.thread)
-            #         index = 0
-            #         print("线程准备启动了! 请稍等 ... ")
-            #         while index < int(BaseData.thread):
-            #             # Thread =
-            #             thr = work(1, "Thread" + str(index), evPage * index + 1, evPage * (index + 1))
-            #             thr.start()
-            #             threads.append(thr)
-            #             index += 1
-            #     else:
-            #         realStart()
         elif mode == '3':
-            print('当前模式 画模式(未制作) 如果是想继续上次任务 只需要输入画师ID 其他全部空白')
-            print('meizuone')
+            def r18d(modeType, content, primaryClassify):
+                if primaryClassify == '2':
+                    primaryClassify = '3'
+                evPage = 10 // 5
+                index = 0
+                while index < 5:
+                    thr = RankWork("Thread" + str(index), evPage * index + 1, evPage * (index + 1), modeType,
+                                   content, primaryClassify)
+                    thr.start()
+                    threads.append(thr)
+                    index += 1
+                pass
+
+
+            def nomd(modeType, content, primaryClassify):
+                evPage = 10 // 5
+                index = 0
+                while index < 5:
+                    thr = RankWork("Thread" + str(index), evPage * index + 1, evPage * (index + 1), modeType,
+                                   content, '1')
+                    thr.start()
+                    threads.append(thr)
+                    index += 1
+                pass
+
+
+            print('当前模式 热榜模式(迭代中)')
+            modeType = input('模式选择  '
+                             '\n1: daily (日榜) '
+                             '\n2: weekly (周榜) (默认)'
+                             '\n3: monthly (月榜) (无R18)'
+                             '\n4: rookie (新人) (无R18)'
+                             '\n5: original (原创) (无R18)'
+                             '\n6: male (受男性欢迎)'
+                             '\n7: female (受女性欢迎)'
+                             '\n8: R18G (无动图)'
+                             '\n请输入：') or '2'
+            content = input('模式选择  '
+                            '\n1: 综合 (默认) '
+                            '\n2: illust (插画)'
+                            '\n3: ugoira (动图) '
+                            '\n4: manga (漫画)'
+                            '\n5: /novel/ranking (小说) (暂不支持)'
+                            '\n请输入：') or '1'
+
+            primaryClassify = input('分级模式选择  '
+                                    '\n1: 大众级 '
+                                    '\n2: R18+大众级(默认) '
+                                    '\n3: R18'
+                                    '\n4: R18G 务必选择这个 其他禁止选这个'
+                                    '\n请输入：') or '2'
+
+            if primaryClassify == '1':
+                nomd(modeType, content, primaryClassify)
+            if primaryClassify == '2':
+                r18d(modeType, content, primaryClassify)
+                nomd(modeType, content, primaryClassify)
+            if primaryClassify == '3':
+                r18d(modeType, content, primaryClassify)
+            if primaryClassify == '4':
+                r18d(modeType, content, primaryClassify)
+
+            # print(thdNum)
+
             pass
 
         while True:
@@ -449,8 +563,8 @@ if __name__ == '__main__':
                         '任务完成了: ' + str(((int(BaseData.pagenum) - unfinishedall) / int(BaseData.pagenum)) * 100) + '%')
             elif cmd == 'about':
                 print('===========================\n'
-                      'Pixder V0.5.6 by Nanometer\n'
-                      '被妹妹拒绝了！！！！\n'
+                      'Pixder V0.6.0 by Nanometer\n'
+                      '释怀中！！！！\n'
                       '===========================\n')
             elif cmd == 'q':
                 if allDone:

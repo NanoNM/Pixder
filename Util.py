@@ -39,17 +39,17 @@ class FileAnalysis:
 
     @staticmethod
     def work(ID, init):
-        url = init.signUrl.replace("PixId", ID)
+        url = init.signUrl.replace("PixId", str(ID))
         while True:
             try:
-                response = requests.request("GET", url ,proxies=init.proxies).text
+                response = requests.request("GET", url, proxies=init.proxies).text
                 # print(response.text)
                 # html = init.se.get(url, proxies=init.proxies, headers=init.headers).text
                 jsonDate = json.loads(response)
                 return jsonDate
             except Exception as e:
-                print('获取' + url + '失败了错误原因: ')
-                print(e, end=' 重试中\n')
+                print('获取' + ID + '图片信息失败了错误原因: ')
+                print('地址' + url + str(e), end='重试中\n')
                 pass
 
     @staticmethod
