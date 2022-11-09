@@ -12,13 +12,13 @@ class FileAnalysis:
         for obj in date:
             i += 1
             # 避免风控加的延迟
-            id = obj['illustId']
+            ids = obj['illustId']
             while True:
                 # print('解析ID: '+id)
                 jsonDate = self.work(obj['illustId'], init)
                 if not jsonDate['error']:
                     break
-                print('解析错误 可能被风控: ' + id)
+                print('解析错误 可能被风控: ' + ids)
                 time.sleep(3)
             obj['illustTitle'] = jsonDate['body']['illustTitle']
             obj['tags'] = jsonDate['body']['tags']['tags']

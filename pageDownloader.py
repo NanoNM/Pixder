@@ -1,4 +1,3 @@
-import os
 import sys
 import zipfile
 import imageio
@@ -97,7 +96,7 @@ def ImgDownloader(init, date, url, part, index, R='' + os.sep + '' + os.sep + ''
                 img_paths = files
             gif_images = []
             for path in img_paths:
-                gif_images.append(imageio.imread(targeImgz + '' + os.sep + '' + path))
+                gif_images.append(imageio.v2.imread(targeImgz + '' + os.sep + '' + path))
             imageio.mimsave(targeImgz + '' + os.sep + '' + "final.gif", gif_images, fps=24)
             # print('动图组 ' + url + ' 生成GIF结束')
             # print('动图组 ' + url + ' 垃圾文件处理中')
