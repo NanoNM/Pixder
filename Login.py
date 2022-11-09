@@ -1,11 +1,11 @@
 import os
 import sys
 import time
-import random
+import warnings
+
 import urllib3
 from bs4 import BeautifulSoup
 from selenium import webdriver
-from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.by import By
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
 from webdriver_manager.chrome import ChromeDriverManager
@@ -16,12 +16,12 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 '''
 
 
-def seleLogin(init=None):
+def seleLogin():
     while True:
         account = input("输入您的账户：")
         password = input("输入您的密码：")
 
-        str = input(
+        s = input(
             "警告！\n"
             "模拟登陆行为是通过selenium webdriver来进行的\n"
             "webdriver主流版本下载地址\n"
@@ -51,21 +51,21 @@ def seleLogin(init=None):
         # else:
         #     sys.exit(0)
         try:
-            if str == "1A":
+            if s == "1A":
                 driver = webdriver.Edge(EdgeChromiumDriverManager().install())
-            elif str == "2A":
+            elif s == "2A":
                 driver = webdriver.Chrome(ChromeDriverManager().install())
-            elif str == "1":
+            elif s == "1":
                 driver = webdriver.Edge('.' + os.sep + 'webdriver' + os.sep + 'webdriver.exe')
-            elif str == "2":
+            elif s == "2":
                 driver = webdriver.Chrome('.' + os.sep + 'webdriver' + os.sep + 'webdriver.exe')
-            elif str == "3":
+            elif s == "3":
                 driver = webdriver.Firefox('.' + os.sep + 'webdriver' + os.sep + 'webdriver.exe')
-            elif str == "4":
+            elif s == "4":
                 driver = webdriver.Opera('.' + os.sep + 'webdriver' + os.sep + 'webdriver.exe')
-            elif str == "5":
+            elif s == "5":
                 driver = webdriver.Ie('.' + os.sep + 'webdriver' + os.sep + 'webdriver.exe')
-            elif str == "6":
+            elif s == "6":
                 driver = webdriver.Safari()
             else:
                 sys.exit(0)
@@ -75,7 +75,7 @@ def seleLogin(init=None):
                         'https://accounts.pixiv.net/login?return_to=https%3A%2F%2Fwww.pixiv.net%2F&lang=zh&source=pc'
                         '&view_type=page')
                     break
-                except Exception as e:
+                except Exception:
                     continue
             break
         except Exception as e:
@@ -84,11 +84,16 @@ def seleLogin(init=None):
             flap = input("重新选择 Y 退出程序 N")
             if flap == 'N' or flap == 'n':
                 sys.exit(0)
-    driver.find_element(by=By.XPATH,
-                        value='/html/body/div[2]/div/div[3]/div[1]/div[2]/div/div/div/form/fieldset[1]/label/input').send_keys(account)
 
+    # 用户名输入框
     driver.find_element(by=By.XPATH,
-                        value='/html/body/div[2]/div/div[3]/div[1]/div[2]/div/div/div/form/fieldset[2]/label/input').send_keys(password)
+                        value='/html/body/div[2]/div/div[3]/div[1]/div[2]/div/div/div/form/fieldset[1]/label/input').\
+        send_keys(account)
+    # 密码输入框
+    driver.find_element(by=By.XPATH,
+                        value='/html/body/div[2]/div/div[3]/div[1]/div[2]/div/div/div/form/fieldset[2]/label/input').\
+        send_keys(password)
+    # 按钮点击
     driver.find_element(by=By.XPATH,
                         value='/html/body/div[2]/div/div[3]/div[1]/div[2]/div/div/div/form/button').click()
 
@@ -106,8 +111,12 @@ def seleLogin(init=None):
     return cookiesStr
 
 
-# 废弃的
 def doLogin(init):
+    warnings.warn(
+        " 这个登录方法已经不在被支持了 将在V0.6.1版本彻底删除 ",
+        DeprecationWarning,
+        stacklevel=2,
+    )
     index = 1
     while index < 6:
         print("尝试登陆... 尝试" + str(index) + "次")
