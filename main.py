@@ -11,6 +11,8 @@ from requests.packages.urllib3.exceptions import InsecureRequestWarning
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
 '''
+主方法 包含main函数,网络测试,用户数据采集等一些前期准备
+
 请勿将本程序用于商业用途！
 请勿将本程序用于商业用途！
 请勿将本程序用于商业用途！

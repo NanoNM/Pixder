@@ -4,7 +4,9 @@ import imageio
 from Util import *
 from urllib import parse
 
-
+'''
+下载类 会分析和下载联系啊
+'''
 # 分级管理
 def picDoDownloader(init, date, url, part, index):
     if int(init.classify) == 1:

@@ -1,6 +1,8 @@
 from main import *
 
-
+'''
+更多指令 暂时没用
+'''
 def command(cmd):
     if cmd == "status":
         for thr in threads:

@@ -1,11 +1,15 @@
 import json
 import os
 import time
+from ssl import SSLError
 from urllib import parse
 
 import requests
 
 
+'''
+工具包 存放一些公用组件
+'''
 class FileAnalysis:
     def fileAnalysis(self, date, init):
         i = 1
@@ -48,6 +52,10 @@ class FileAnalysis:
                 jsonDate = json.loads(response)
                 return jsonDate
             except Exception as e:
+                print('获取' + ID + '图片信息失败了错误原因: ')
+                print('地址' + url + str(e), end='重试中\n')
+                pass
+            except requests.exceptions.SSLError as e:
                 print('获取' + ID + '图片信息失败了错误原因: ')
                 print('地址' + url + str(e), end='重试中\n')
                 pass

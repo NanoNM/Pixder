@@ -11,7 +11,9 @@ from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-
+'''
+没用
+'''
 class Chrome80:
     @staticmethod
     def dpapi_decrypt(encrypted):
