@@ -44,7 +44,8 @@ class FileAnalysis:
     @staticmethod
     def work(ID, init):
         # print("分析"+ID)
-        url = init.signUrl.replace("PixId", str(ID))
+        ID = str(ID)
+        url = init.signUrl.replace("PixId", ID)
         while True:
             try:
                 # response = init.se.get(url, proxies=init.proxies, headers=init.headers, verify=False, ).text
