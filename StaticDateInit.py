@@ -68,6 +68,9 @@ class StaticDateInit(object):
         self.classify = classify
         self.userPage = 'https://www.pixiv.net/ajax/user/USERID/profile/all?lang=zh'
         self.userID = UserID
+        # 代理设置
+        self.proxiesAddr = None
+        self.proxiesPort = None
 
 
 def init(Cookie, name, minlike, pagenum, thread, classify, proxies, userAgent):

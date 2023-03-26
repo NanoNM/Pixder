@@ -9,6 +9,7 @@ from urllib import parse
 '''
 # 分级管理
 def picDoDownloader(init, date, url, part, index):
+    # print("URL ============= " + url)
     if int(init.classify) == 1:
         for tag in date['tags']:
             if 'R-18' == tag['tag'] or 'R-18G' == tag['tag']:
@@ -59,7 +60,7 @@ def picDoDownloader(init, date, url, part, index):
 
 
 def ImgDownloader(init, date, url, part, index, R='' + os.sep + '' + os.sep + ''):
-    global targeImg
+    targeImg = None
     try:
         sty = url.split(".")[-1]
         PIC = init.se.get(url, proxies=init.proxies, headers=init.headers)
@@ -210,7 +211,12 @@ class Downloader:
         else:
             url = init.rankContentUrl + contentStr + '&mode=' + modeTypeStr + '&p=' + str(page)
         html = init.se.get(url, proxies=init.proxies, headers=init.headers, verify=False, ).text
-        htmlJson = json.loads(html)
+        try:
+            htmlJson = json.loads(html)
+        except json.decoder.JSONDecodeError as e:
+            print("cookie失效或者反扒机制更新")
+            print(e)
+            sys.exit(1)
         try:
             for datas in htmlJson['contents']:
                 item = {
@@ -262,27 +268,55 @@ class Downloader:
         judge = Judge()
         if judge.checkLikeNum(init.minlike, date['likeCon']):
             return 0
-        index = 0
-        while index < date['pageCount']:
-            if date['original'].find('p0') != -1:
-                part = 'p' + str(index)
-                url = date['original'].replace('p0', part)
-                index += 1
-                print('即将下载: ' + url)
-                picDoDownloader(init, date, url, part, index)
-            if date['original'].find('ugoira0') != -1:
+
+        illustId = str(date['illustId'])
+        print("解析" + illustId + "中")
+        url = 'https://www.pixiv.net/ajax/illust/' + illustId + '/pages'
+        illust_pages = init.se.get(url, proxies=init.proxies, headers=init.headers).text
+        illust_pages = json.loads(illust_pages)
+        # print(illust_pages)
+        imgs = illust_pages['body']
+        i = 0
+        for img in imgs:
+            part = 'p' + str(i)
+            original_url = img['urls']['original']
+            if 'ugoira' in original_url:
+                # print('即将下载动图文件包 1920 x 1080: ' + original_url)
                 gifUrl = 'https://www.pixiv.net/ajax/illust/' + str(date['illustId']) + '/ugoira_meta?lang=zh'
                 gifUrlJsonStr = init.se.get(gifUrl, proxies=init.proxies, headers=init.headers).text
                 gifUrlJson = json.loads(gifUrlJsonStr)
-                # str(date['width'])
-                # str(date['height'])
-                url = gifUrlJson['body']['originalSrc']
-                part = 'ugoira' + '1920' + 'x' + '1080' + '.zip'
-                # url = date['original'].replace('img-original', 'img-zip-ugoira')
-                # url = url.replace('ugoira0.jpg', part)
-                print('即将下载动图文件包 1920 x 1080: ' + url)
-                picDoDownloader(init, date, url, part, index)
-                index += 1
+                originalSrc = gifUrlJson['body']['originalSrc']
+                picDoDownloader(init, date, originalSrc, part, i)
+                i += 1
+                pass
+            else:
+                print('即将下载: ' + original_url)
+                picDoDownloader(init, date, original_url, part, i)
+                i += 1
+        # index = 0
+        # while index < date['pageCount']:
+
+            # if date['original'] is None:
+                # return
+            # if date['original'].find('p0') != -1:
+            #     part = 'p' + str(index)
+            #     url = date['original'].replace('p0', part)
+            #     index += 1
+            #     print('即将下载: ' + url)
+            #     picDoDownloader(init, date, url, part, index)
+            # if date['original'].find('ugoira0') != -1:
+            #     gifUrl = 'https://www.pixiv.net/ajax/illust/' + str(date['illustId']) + '/ugoira_meta?lang=zh'
+            #     gifUrlJsonStr = init.se.get(gifUrl, proxies=init.proxies, headers=init.headers).text
+            #     gifUrlJson = json.loads(gifUrlJsonStr)
+            #     # str(date['width'])
+            #     # str(date['height'])
+            #     url = gifUrlJson['body']['originalSrc']
+            #     part = 'ugoira' + '1920' + 'x' + '1080' + '.zip'
+            #     # url = date['original'].replace('img-original', 'img-zip-ugoira')
+            #     # url = url.replace('ugoira0.jpg', part)
+            #     print('即将下载动图文件包 1920 x 1080: ' + url)
+            #     picDoDownloader(init, date, url, part, index)
+            #     index += 1
 
     @staticmethod
     def penterDownloader(init, date):

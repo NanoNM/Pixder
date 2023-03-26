@@ -43,22 +43,26 @@ class FileAnalysis:
 
     @staticmethod
     def work(ID, init):
+        # print("分析"+ID)
         url = init.signUrl.replace("PixId", str(ID))
         while True:
             try:
+                # response = init.se.get(url, proxies=init.proxies, headers=init.headers, verify=False, ).text
                 response = requests.request("GET", url, proxies=init.proxies).text
                 # print(response.text)
                 # html = init.se.get(url, proxies=init.proxies, headers=init.headers).text
                 jsonDate = json.loads(response)
+                # print("分析结束" + ID)
                 return jsonDate
             except Exception as e:
                 print('获取' + ID + '图片信息失败了错误原因: ')
-                print('地址' + url + str(e), end='重试中\n')
+                print('地址' + url + str(e), end='\n重试中\n')
                 pass
             except requests.exceptions.SSLError as e:
                 print('获取' + ID + '图片信息失败了错误原因: ')
-                print('地址' + url + str(e), end='重试中\n')
+                print('地址' + url + str(e), end='\n重试中\n')
                 pass
+
 
     @staticmethod
     def UnfinishedTask(init, index, threadInfo, mode):

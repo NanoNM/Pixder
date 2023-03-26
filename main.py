@@ -72,6 +72,9 @@ def userInfoGe():
                 "http": "http://" + address + ":" + port,
                 "https": "http://" + address + ":" + port,
             }
+            #
+            # BaseData.proxiesAddr = address
+            # BaseData.proxiesPort = port
             if not __connectTest(proxies):
                 i = input('连接失败 输入E停止程序, 输入其他重启测试\n')
                 if i == 'E' or i == 'e':
@@ -83,7 +86,7 @@ def userInfoGe():
     loginMod = input('你已经知道你的cookie了? y/n') or 'n'
     if loginMod == 'n' or loginMod == 'N':
         print("确定你所使用的浏览器对应webdriver")
-        cookie = seleLogin()
+        cookie = seleLogin(isNeedProxies)
     else:
         cookie = input("输入您的Cookie\n")
     item = {"projectName": 'settingFile',
