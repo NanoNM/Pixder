@@ -20,7 +20,7 @@ requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 我写的代码 我自己都不赚钱 也不是给你用来赚钱的!!! 
 '''
 
-BaseData = None
+BaseData:StaticDateInit = None
 NewTask = True
 
 BaseConfig = None
@@ -67,7 +67,7 @@ def userInfoGe():
     if not isNeedProxies:
         while True:
             address = input("请输入代理地址 默认127.0.0.1") or '127.0.0.1'
-            port = input("请输入代理端口 默认7890") or '7890'
+            port = input("请输入代理端口 默认10809") or '10809'
             proxies = {
                 "http": "http://" + address + ":" + port,
                 "https": "http://" + address + ":" + port,
@@ -96,6 +96,7 @@ def userInfoGe():
     with open('.' + os.sep + 'userInfo.json', 'w', encoding='utf-8') as file:
         file.write(json.dumps(item, ensure_ascii=False))
     print("请稍等 ..")
+
 
 
 def start(Name):

@@ -18,7 +18,7 @@ class FileAnalysis:
             # 避免风控加的延迟
             ids = obj['illustId']
             while True:
-                # print('解析ID: '+id)
+                print('解析ID: '+ids)
                 jsonDate = self.work(obj['illustId'], init)
                 if not jsonDate['error']:
                     break
@@ -29,7 +29,7 @@ class FileAnalysis:
             obj['original'] = jsonDate['body']['urls']['original']
             obj['likeCon'] = jsonDate['body']['bookmarkCount']
             obj['pageCount'] = jsonDate['body']['pageCount']
-            # print('解析完成: ' + id)
+            print('解析完成: ' + ids)
 
     # def panterAnalysis(self, date, init):
     #     i = 1

@@ -1,11 +1,14 @@
 import requests
 from urllib import parse
+
 # from faker import Faker
 
 
 '''
 静态量 存放一些基本不会改变的常量
 '''
+
+
 class StaticDateInit(object):
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
